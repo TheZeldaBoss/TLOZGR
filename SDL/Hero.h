@@ -6,23 +6,29 @@
 class Hero
 {
 private:
-	int posX;
-	int posY;
+	float posX;
+	float posY;
 	map actualMap;
-	int posXScreen;
-	int posYScreen;
+	float posXScreen;
+	float posYScreen;
+	int actualImage;
+	int actualPos;
 public:
-	Hero(int posX, int posY, map actualMap);
-	int getPosX();
-	void setPosX(int);
-	int getPosY();
-	void setPosY(int);
+	Hero(float posX, float posY, map actualMap);
+	float getPosX();
+	void setPosX(float);
+	float getPosY();
+	void setPosY(float);
 	map getActualMap();
 	void setActualMap(map);
-	int getPosXScreen();
-	void setPosXScreen(int);
-	int getPosYScreen();
-	void setPosYScreen(int);
+	float getPosXScreen();
+	void setPosXScreen(float);
+	float getPosYScreen();
+	void setPosYScreen(float);
+	int getActualImage();
+	void setActualImage(int);
+	int getActualPos();
+	void setActualPos(int);
 };
 
 #endif /*HERO_H_*/

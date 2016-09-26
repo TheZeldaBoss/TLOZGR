@@ -1,45 +1,45 @@
 #include "Hero.h"
 #include <iostream>
-Hero::Hero(int posX, int posY, map actualMap)
+Hero::Hero(float posX, float posY, map actualMap)
 {
 	this->posX = posX;
 	this->posY = posY;
 	this->actualMap = actualMap;
-	if (actualMap.getLayerWalls()[posX][posY] != 0)
+	if (actualMap.getLayerWalls()[(int)(posX)][(int)(posY)] != 0)
 	{
 		std::cerr << "bad position : character is in a wall" << std::endl;
 		exit(1);
 	}
-	if (this->posX < 20)
+	if (this->posX < 20.0)
 		this->posXScreen = this->posX;
-	else if ((this->actualMap.getWidth() - this->posX) < 20)
-		this->posXScreen = 40 - (actualMap.getWidth() - this->posX);
+	else if ((this->actualMap.getWidth() - this->posX) < 20.0)
+		this->posXScreen = (float)(40.0 - (actualMap.getWidth() - this->posX));
 	else
-		this->posXScreen = 20;
-	if (this->posY < 20)
+		this->posXScreen = 20.0;
+	if (this->posY < 20.0)
 		this->posYScreen = this->posY;
-	else if ((this->actualMap.getHeight() - this->posY) < 20)
-		this->posYScreen = 40 - (actualMap.getHeight() - this->posY);
+	else if ((this->actualMap.getHeight() - this->posY) < 20.0)
+		this->posYScreen = (float)(40.0 - (actualMap.getHeight() - this->posY));
 	else
-		this->posYScreen = 20;
+		this->posYScreen = 20.0;
 }
 
-int Hero::getPosX()
+float Hero::getPosX()
 {
 	return (this->posX);
 }
 
-void Hero::setPosX(int posX)
+void Hero::setPosX(float posX)
 {
 	this->posX = posX;
 }
 
-int Hero::getPosY()
+float Hero::getPosY()
 {
 	return (this->posY);
 }
 
-void Hero::setPosY(int posY)
+void Hero::setPosY(float posY)
 {
 	this->posY = posY;
 }
@@ -54,22 +54,42 @@ void Hero::setActualMap(map actualMap)
 	this->actualMap = actualMap;
 }
 
-int Hero::getPosXScreen()
+float Hero::getPosXScreen()
 {
 	return (this->posXScreen);
 }
 
-void Hero::setPosXScreen(int posXScreen)
+void Hero::setPosXScreen(float posXScreen)
 {
 	this->posXScreen = posXScreen;
 }
 
-int Hero::getPosYScreen()
+float Hero::getPosYScreen()
 {
 	return (this->posYScreen);
 }
 
-void Hero::setPosYScreen(int posYScreen)
+void Hero::setPosYScreen(float posYScreen)
 {
 	this->posYScreen = posYScreen;
+}
+
+int Hero::getActualImage()
+{
+	return (this->actualImage);
+}
+
+void Hero::setActualImage(int actu)
+{
+	this->actualImage = actu;
+}
+
+int Hero::getActualPos()
+{
+	return (this->actualPos);
+}
+
+void Hero::setActualPos(int pos)
+{
+	this->actualPos = pos;
 }

@@ -3,6 +3,6 @@
 
 #include <SDL2/SDL.h>
 #include "Hero.h"
-bool execEvent(SDL_Event event, SDL_Window *window, Hero *hero, map);
+bool execEvent(SDL_Event event, void *data);
 
 #endif

@@ -97,18 +97,25 @@ int main(int argc, char *argv[])
 	map testMap2("./data/maps/text_files/map.txt");
 	maps.push_back(testMap);
 	maps.push_back(testMap2);
-
+	
 	int i = 0;
 	if ((window = initWindow()) == NULL)
 		return -1;
 	SDL_Event event;
-	Hero hero(0, 0, testMap);
+	Hero hero(10, 8, testMap);
 	bool exit_program = false;
-	DrawMap(testMap, window, hero, true);
+	DataToDraw dat(&testMap, window, &hero, true);
+	init(&dat);
+	DrawMap(&dat, 0, 0);
+	dat.setDrawAll(false);
 	while (!exit_program)
 	{
+		Uint32 time = SDL_GetTicks();
 		SDL_PollEvent(&event);
-		exit_program = execEvent(event, window, &hero, testMap);
+		exit_program = execEvent(event, (void *)(&dat));
+		time = SDL_GetTicks() - time;
+		Sleep((15 - time));
 	}
+	destroy(&dat);
 	return 0;
 }

@@ -3,10 +3,12 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <SDL2/SDL.h>
 
 extern std::vector<std::string> tilesetNames;
 extern std::vector<int> tilesetWidths;
 extern std::vector<int> tilesetHeights;
+extern std::vector<SDL_Surface> mapsImages;
 
 void map::setWidth(int width)
 {
