@@ -28,10 +28,17 @@ bool execEvent(SDL_Event event, void *data)
 			if (dat->getHero()->getPosYScreen() == actualPosScreenY && dat->getHero()->getPosXScreen() == actualPosScreenX)
 				dat->setDrawAll(true);
 		}
-		dat->getHero()->setActualImage(dat->getHero()->getActualImage() + 1);
-		if (dat->getHero()->getActualImage() > 10)
-			dat->getHero()->setActualImage(0);
-		dat->getHero()->setActualPos(1);
+		if (dat->getHero()->getCount() > 2)
+		{
+			dat->getHero()->setActualImage(dat->getHero()->getActualImage() + 1);
+			dat->getHero()->setCount(0);
+			if (dat->getHero()->getActualImage() > 10)
+				dat->getHero()->setActualImage(0);
+		}
+		else if (!keystate[SDL_SCANCODE_UP] && !keystate[SDL_SCANCODE_DOWN])
+			dat->getHero()->setCount(dat->getHero()->getCount() + 1);
+		if (!keystate[SDL_SCANCODE_UP] && !keystate[SDL_SCANCODE_DOWN])
+			dat->getHero()->setActualPos(1);
 		DrawMap(data, dat->getHero()->getActualImage(), 1);
 	}
 	if (keystate[SDL_SCANCODE_RIGHT])
@@ -49,10 +56,17 @@ bool execEvent(SDL_Event event, void *data)
 		}
 		if (dat->getHero()->getPosYScreen() == actualPosScreenY && dat->getHero()->getPosXScreen() == actualPosScreenX)
 			dat->setDrawAll(true);
-		dat->getHero()->setActualImage(dat->getHero()->getActualImage() + 1);
-		if (dat->getHero()->getActualImage() > 10)
-			dat->getHero()->setActualImage(0);
-		dat->getHero()->setActualPos(3);
+		if (dat->getHero()->getCount() > 2)
+		{
+			dat->getHero()->setActualImage(dat->getHero()->getActualImage() + 1);
+			dat->getHero()->setCount(0);
+			if (dat->getHero()->getActualImage() > 10)
+				dat->getHero()->setActualImage(0);
+		}
+		else if (!keystate[SDL_SCANCODE_UP] && !keystate[SDL_SCANCODE_DOWN])
+			dat->getHero()->setCount(dat->getHero()->getCount() + 1);
+		if (!keystate[SDL_SCANCODE_UP] && !keystate[SDL_SCANCODE_DOWN])
+			dat->getHero()->setActualPos(3);
 		DrawMap(data, dat->getHero()->getActualImage(), 3);
 	}
 	if (keystate[SDL_SCANCODE_UP])
@@ -70,9 +84,14 @@ bool execEvent(SDL_Event event, void *data)
 		}
 		if (dat->getHero()->getPosYScreen() == actualPosScreenY && dat->getHero()->getPosXScreen() == actualPosScreenX)
 			dat->setDrawAll(true);
-		dat->getHero()->setActualImage(dat->getHero()->getActualImage() + 1);
-		if (dat->getHero()->getActualImage() > 10)
-			dat->getHero()->setActualImage(0);
+		if (dat->getHero()->getCount() > 2)
+		{
+			dat->getHero()->setActualImage(dat->getHero()->getActualImage() + 1);
+			dat->getHero()->setCount(0);
+			if (dat->getHero()->getActualImage() > 10)
+				dat->getHero()->setActualImage(0);
+		}
+		dat->getHero()->setCount(dat->getHero()->getCount() + 1);
 		dat->getHero()->setActualPos(2);
 	}
 	if (keystate[SDL_SCANCODE_DOWN])
@@ -90,10 +109,15 @@ bool execEvent(SDL_Event event, void *data)
 		}
 		if (dat->getHero()->getPosYScreen() == actualPosScreenY && dat->getHero()->getPosXScreen() == actualPosScreenX)
 			dat->setDrawAll(true);
-
-		dat->getHero()->setActualImage(dat->getHero()->getActualImage() + 1);
-		if (dat->getHero()->getActualImage() > 10)
-			dat->getHero()->setActualImage(0);
+		if (dat->getHero()->getCount() > 2)
+		{
+			dat->getHero()->setActualImage(dat->getHero()->getActualImage() + 1);
+			dat->getHero()->setCount(0);
+			if (dat->getHero()->getActualImage() > 10)
+				dat->getHero()->setActualImage(0);
+		}
+		else
+			dat->getHero()->setCount(dat->getHero()->getCount() + 1);
 		dat->getHero()->setActualPos(0);
 	}
 	if (!(keystate[SDL_SCANCODE_LEFT]) && !(keystate[SDL_SCANCODE_RIGHT]) && !(keystate[SDL_SCANCODE_UP]) && !(keystate[SDL_SCANCODE_DOWN]))
@@ -105,8 +129,6 @@ bool execEvent(SDL_Event event, void *data)
 		closeWindow(dat->getWindow());
 		return (true);
 		break;
-	case SDL_KEYUP:
-		dat->getHero()->setActualImage(0);
 	default:
 		break;
 	}

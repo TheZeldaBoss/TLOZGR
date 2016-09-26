@@ -13,6 +13,7 @@ private:
 	float posYScreen;
 	int actualImage;
 	int actualPos;
+	int count;
 public:
 	Hero(float posX, float posY, map actualMap);
 	float getPosX();
@@ -29,6 +30,8 @@ public:
 	void setActualImage(int);
 	int getActualPos();
 	void setActualPos(int);
+	int getCount();
+	void setCount(int);
 };
 
 #endif /*HERO_H_*/

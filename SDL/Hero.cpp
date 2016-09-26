@@ -22,6 +22,9 @@ Hero::Hero(float posX, float posY, map actualMap)
 		this->posYScreen = (float)(40.0 - (actualMap.getHeight() - this->posY));
 	else
 		this->posYScreen = 20.0;
+	this->actualImage = 0;
+	this->actualPos = 0;
+	this->count = 0;
 }
 
 float Hero::getPosX()
@@ -92,4 +95,14 @@ int Hero::getActualPos()
 void Hero::setActualPos(int pos)
 {
 	this->actualPos = pos;
+}
+
+int Hero::getCount()
+{
+	return this->count;
+}
+
+void Hero::setCount(int count)
+{
+	this->count = count;
 }
