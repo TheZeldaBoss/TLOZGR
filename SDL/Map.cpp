@@ -171,3 +171,123 @@ std::vector< std::vector<int> >map::getLayerCeiling()
 {
 	return this->layerCeiling;
 }
+
+map *map::getMapSouth()
+{
+	return (this->mapSouth);
+}
+
+void map::setMapSouth(map *newMap)
+{
+	this->mapSouth = newMap;
+}
+
+map *map::getMapNorth()
+{
+	return this->mapNorth;
+}
+
+void map::setMapNorth(map *newMap)
+{
+	this->mapNorth = newMap;
+}
+
+map *map::getMapEast()
+{
+	return this->mapEast;
+}
+
+void map::setMapEast(map *newMap)
+{
+	this->mapEast = newMap;
+}
+
+map *map::getMapWest()
+{
+	return this->mapWest;
+}
+
+void map::setMapWest(map *newMap)
+{
+	this->mapEast = newMap;
+}
+
+std::vector<map> init_maps_out()
+{
+	std::vector<map> maps;
+	map villageKokiri("./data/maps/text_files/world/VillageKokiri.txt");
+	map foret("./data/maps/text_files/world/Foret.txt");
+	map lacHylia("./data/maps/text_files/world/lac.txt");
+	map villageZora("./data/maps/text_files/world/lac.txt");
+	map jardinsChateau("./data/maps/text_files/world/JardinsChateau.txt");
+	map plaineNord("./data/maps/text_files/world/plaineNord.txt");
+	map villageHyrule("./data/maps/text_files/world/VillageHyrule.txt");
+	map domaineLink("./data/maps/text_files/world/DomaineLink.txt");
+	map sommetMontagne("./data/maps/text_files/world/SommetMontagne.txt");
+	map villageGoron("./data/maps/text_files/world/VillageGoron.txt");
+	map plaineEst("./data/maps/text_files/world/plaineEst.txt");
+	map villageGerudo("./data/maps/text_files/world/villageGerudo.txt");
+
+	villageKokiri.setMapNorth(NULL);
+	villageKokiri.setMapSouth(&foret);
+	villageKokiri.setMapEast(NULL);
+	villageKokiri.setMapWest(NULL);
+	foret.setMapNorth(&villageKokiri);
+	foret.setMapSouth(NULL);
+	foret.setMapEast(&plaineNord);
+	foret.setMapWest(NULL);
+	lacHylia.setMapNorth(NULL);
+	lacHylia.setMapSouth(&foret);
+	lacHylia.setMapEast(&villageHyrule);
+	lacHylia.setMapWest(NULL);
+	villageZora.setMapNorth(&lacHylia);
+	villageZora.setMapSouth(NULL);
+	villageZora.setMapEast(NULL);
+	villageZora.setMapWest(NULL);
+	jardinsChateau.setMapNorth(NULL);
+	jardinsChateau.setMapSouth(&plaineNord);
+	jardinsChateau.setMapEast(NULL);
+	jardinsChateau.setMapWest(NULL);
+	plaineNord.setMapNorth(&jardinsChateau);
+	plaineNord.setMapSouth(&villageHyrule);
+	plaineNord.setMapEast(&villageGoron);
+	plaineNord.setMapWest(&foret);
+	villageHyrule.setMapNorth(&plaineNord);
+	villageHyrule.setMapSouth(&domaineLink);
+	villageHyrule.setMapEast(&plaineEst);
+	villageHyrule.setMapWest(&lacHylia);
+	domaineLink.setMapNorth(&villageHyrule);
+	domaineLink.setMapSouth(NULL);
+	domaineLink.setMapEast(NULL);
+	domaineLink.setMapWest(NULL);
+	sommetMontagne.setMapNorth(NULL);
+	sommetMontagne.setMapSouth(&villageGoron);
+	sommetMontagne.setMapEast(NULL);
+	sommetMontagne.setMapWest(NULL);
+	villageGoron.setMapNorth(&sommetMontagne);
+	villageGoron.setMapSouth(NULL);
+	villageGoron.setMapEast(NULL);
+	villageGoron.setMapWest(&plaineNord);
+	plaineEst.setMapNorth(NULL);
+	plaineEst.setMapSouth(&villageGerudo);
+	plaineEst.setMapEast(NULL);
+	plaineEst.setMapWest(&villageHyrule);
+	villageGerudo.setMapNorth(&plaineEst);
+	villageGerudo.setMapSouth(NULL);
+	villageGerudo.setMapEast(NULL);
+	villageGerudo.setMapWest(NULL);
+	
+	maps.push_back(villageKokiri);
+	maps.push_back(foret);
+	maps.push_back(lacHylia);
+	maps.push_back(villageZora);
+	maps.push_back(jardinsChateau);
+	maps.push_back(plaineNord);
+	maps.push_back(villageHyrule);
+	maps.push_back(domaineLink);
+	maps.push_back(sommetMontagne);
+	maps.push_back(villageGoron);
+	maps.push_back(plaineEst);
+	maps.push_back(villageGerudo);
+	return (maps);
+}

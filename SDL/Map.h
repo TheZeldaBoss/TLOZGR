@@ -6,6 +6,7 @@
 #include <SDL2\SDL.h>
 
 
+
 class map
 {
 private:
@@ -17,6 +18,12 @@ private:
 	std::vector< std::vector<int> >layerFloor;
 	std::vector< std::vector<int> >layerWalls;
 	std::vector< std::vector<int> >layerCeiling;
+
+	map *mapNorth;
+	map *mapSouth;
+	map *mapEast;
+	map *mapWest;
+
 public:
 	void setWidth(int);
 	void setHeight(int);
@@ -34,5 +41,17 @@ public:
 	std::vector< std::vector<int> >getLayerCeiling();
 	map(std::string filename);
 	map();
+
+	map *getMapSouth();
+	void setMapSouth(map *);
+	map *getMapNorth();
+	void setMapNorth(map *);
+	map *getMapEast();
+	void setMapEast(map *);
+	map *getMapWest();
+	void setMapWest(map *);
+
 };
+
+std::vector<map> init_maps_out();
 #endif /*MAP_H_*/

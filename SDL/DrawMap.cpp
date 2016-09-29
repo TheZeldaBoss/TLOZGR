@@ -257,8 +257,8 @@ int DrawMap(void *data, int pictureHeroX, int pictureHeroY)
 
 	int tilesetWidth = tilesetWidths[dat->getMap()->getTilesetValue()];
 	int tilesetHeight = tilesetHeights[dat->getMap()->getTilesetValue()];
-	float xOrig;
-	float yOrig;
+	float xOrig;//coord x de l'affichage de la map
+	float yOrig;//coord y de l'affichage de la map
 	if (dat->getHero()->getPosX() <= 20)//partie gauche
 		xOrig = 0;
 	else if (dat->getHero()->getPosX() > (dat->getMap()->getWidth() - 20))//partie droite
@@ -285,19 +285,24 @@ int DrawMap(void *data, int pictureHeroX, int pictureHeroY)
 	srcHero.y = pictureHeroY * 32;
 	srcHero.w = 24;
 	srcHero.h = 32;
-	if (dat->getHero()->getPosX() <= 20)//partie gauche
-		dstHero.x = (int)(((dat->getHero()->getPosX()) * 16) - 16);
-	else if (dat->getHero()->getPosX() > dat->getMap()->getWidth() - 20)//partie droite
-		dstHero.x = (int)(((40 - (((dat->getMap()->getWidth()) - (dat->getHero()->getPosX())))) * 16) - 16);
-	else//milieu
-		dstHero.x = 320 - 16;
-
-	if (dat->getHero()->getPosY() <= 15)
-		dstHero.y = (int)(((dat->getHero()->getPosY()) * 16) - 16);
-	else if (dat->getHero()->getPosY() > dat->getMap()->getHeight() - 15)
-		dstHero.y = (int)(((30 - (((dat->getMap()->getHeight()) - (dat->getHero()->getPosY())))) * 16) - 16);
+	//partie gauche map
+	if (dat->getHero()->getPosX() <= 20)
+		dstHero.x = (int)(((dat->getHero()->getPosX()) * 16) - 24);
+	//partie droite map
+	else if (dat->getHero()->getPosX() > dat->getMap()->getWidth() - 20)
+		dstHero.x = (int)(((40 - (((dat->getMap()->getWidth()) - (dat->getHero()->getPosX())))) * 16) - 24);
+	//milieu map
 	else
-		dstHero.y = 240 - 16;
+		dstHero.x = 320 - 24;
+	//partie haute map
+	if (dat->getHero()->getPosY() <= 15)
+		dstHero.y = (int)(((dat->getHero()->getPosY()) * 16) - 48);
+	//partie basse map
+	else if (dat->getHero()->getPosY() > dat->getMap()->getHeight() - 15)
+		dstHero.y = (int)(((30 - (((dat->getMap()->getHeight()) - (dat->getHero()->getPosY())))) * 16) - 48);
+	//milieu map
+	else
+		dstHero.y = 240 - 48;
 	dstHero.w = 48;
 	dstHero.h = 64;
 	SDL_RenderCopy(dat->getRenderer(), dat->getTextureFloor(), &srcRect, &dstRect);

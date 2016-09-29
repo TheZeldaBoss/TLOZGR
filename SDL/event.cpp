@@ -17,7 +17,7 @@ bool execEvent(SDL_Event event, void *data)
 	{
 		if (dat->getHero()->getPosX() >= 1)
 		{
-			if (dat->getMap()->getLayerWalls()[(int)(dat->getHero()->getPosY())][(int)(dat->getHero()->getPosX()) - 1] == 0)
+			if (dat->getMap()->getLayerWalls()[(int)(dat->getHero()->getPosY() - 1)][(int)(dat->getHero()->getPosX() - 0.125)] == 0)
 			{
 				dat->getHero()->setPosX(dat->getHero()->getPosX() - (float)0.125);
 				if (dat->getHero()->getPosX() >= (dat->getMap()->getWidth() - 15))
@@ -37,15 +37,15 @@ bool execEvent(SDL_Event event, void *data)
 		}
 		else if (!keystate[SDL_SCANCODE_UP] && !keystate[SDL_SCANCODE_DOWN])
 			dat->getHero()->setCount(dat->getHero()->getCount() + 1);
-		if (!keystate[SDL_SCANCODE_UP] && !keystate[SDL_SCANCODE_DOWN])
+		if (!(keystate[SDL_SCANCODE_UP]) && !(keystate[SDL_SCANCODE_DOWN]))
 			dat->getHero()->setActualPos(1);
-		DrawMap(data, dat->getHero()->getActualImage(), 1);
+		DrawMap(data, dat->getHero()->getActualImage(), dat->getHero()->getActualPos());
 	}
 	if (keystate[SDL_SCANCODE_RIGHT])
 	{
 		if (dat->getHero()->getPosX() < (dat->getMap()->getWidth() - 1))
 		{
-			if (dat->getMap()->getLayerWalls()[(int)(dat->getHero()->getPosY())][(int)(dat->getHero()->getPosX()) + 1] == 0)
+			if (dat->getMap()->getLayerWalls()[(int)(dat->getHero()->getPosY() - 1)][(int)(dat->getHero()->getPosX() + 0.125)] == 0)
 			{
 				dat->getHero()->setPosX(dat->getHero()->getPosX() + (float)0.125);
 				if (dat->getHero()->getPosX() >= (dat->getMap()->getWidth() - 15))
@@ -67,13 +67,13 @@ bool execEvent(SDL_Event event, void *data)
 			dat->getHero()->setCount(dat->getHero()->getCount() + 1);
 		if (!keystate[SDL_SCANCODE_UP] && !keystate[SDL_SCANCODE_DOWN])
 			dat->getHero()->setActualPos(3);
-		DrawMap(data, dat->getHero()->getActualImage(), 3);
+		DrawMap(data, dat->getHero()->getActualImage(), dat->getHero()->getActualPos());
 	}
 	if (keystate[SDL_SCANCODE_UP])
 	{
 		if (dat->getHero()->getPosY() >= 1)
 		{
-			if (dat->getMap()->getLayerWalls()[(int)(dat->getHero()->getPosY()) - 1][(int)(dat->getHero()->getPosX())] == 0)
+			if (dat->getMap()->getLayerWalls()[(int)(dat->getHero()->getPosY() - 1.5)][(int)(dat->getHero()->getPosX())] == 0)
 			{
 				dat->getHero()->setPosY(dat->getHero()->getPosY() - (float)(0.125));
 				if (dat->getHero()->getPosY() >= dat->getMap()->getHeight() - 15)
@@ -98,7 +98,7 @@ bool execEvent(SDL_Event event, void *data)
 	{
 		if (dat->getHero()->getPosY() < dat->getMap()->getHeight() - 1)
 		{
-			if (dat->getMap()->getLayerWalls()[(int)(dat->getHero()->getPosY()) + 1][(int)(dat->getHero()->getPosX())] == 0)
+			if (dat->getMap()->getLayerWalls()[(int)(dat->getHero()->getPosY() + 0.125)][(int)(dat->getHero()->getPosX())] == 0)
 			{
 				dat->getHero()->setPosY(dat->getHero()->getPosY() + (float)(0.125));
 				if (dat->getHero()->getPosY() >= dat->getMap()->getHeight() - 15)

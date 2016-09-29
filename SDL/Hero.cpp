@@ -5,11 +5,11 @@ Hero::Hero(float posX, float posY, map actualMap)
 	this->posX = posX;
 	this->posY = posY;
 	this->actualMap = actualMap;
-	if (actualMap.getLayerWalls()[(int)(posX)][(int)(posY)] != 0)
+	/*if (actualMap.getLayerWalls()[(int)(posX)][(int)(posY)] != 0)
 	{
 		std::cerr << "bad position : character is in a wall" << std::endl;
 		exit(1);
-	}
+	}*/
 	if (this->posX < 20.0)
 		this->posXScreen = this->posX;
 	else if ((this->actualMap.getWidth() - this->posX) < 20.0)

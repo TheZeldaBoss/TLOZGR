@@ -93,18 +93,15 @@ int main(int argc, char *argv[])
 	initTilesetData();//initialisation des données des tilesets : noms, taille
 	SDL_Window *window;
 	std::vector<map> maps;
-	map testMap("./data/maps/text_files/testCeiling.txt");//fichier de test d'affichage
-	map testMap2("./data/maps/text_files/map.txt");
-	maps.push_back(testMap);
-	maps.push_back(testMap2);
+	maps = init_maps_out();
 	
 	int i = 0;
 	if ((window = initWindow()) == NULL)
 		return -1;
 	SDL_Event event;
-	Hero hero(10, 8, testMap);
+	Hero hero(10, 7, maps[7]);
 	bool exit_program = false;
-	DataToDraw dat(&testMap, window, &hero, true);
+	DataToDraw dat(&(maps[7]), window, &hero, true);
 	init(&dat);
 	DrawMap(&dat, 0, 0);
 	dat.setDrawAll(false);
@@ -114,7 +111,8 @@ int main(int argc, char *argv[])
 		SDL_PollEvent(&event);
 		exit_program = execEvent(event, (void *)(&dat));
 		time = SDL_GetTicks() - time;
-		Sleep((15 - time));
+		if (time < 15)
+			Sleep((15 - time));
 	}
 	destroy(&dat);
 	return 0;
