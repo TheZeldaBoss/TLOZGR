@@ -9,12 +9,13 @@
 #include "event.h"
 #include <SDL2/SDL_thread.h>
 
-enum tilesets { eTDesert, eTForet, eTGrottes, eTHouse1, eTHouse2, eTHouse3, eTHouse4, eTHouse5, eTLac, eTMarais, eTMontagne, eTPlaines, eTD1, eTD2, eTD3, eTD4, eTD5, eTD6, eTD7, eTD8, eTD9, eTD10OUT, eTD10 };
+enum tilesets { eTDesert = 0, eTForet, eTGrottes, eTHouse1, eTHouse2, eTHouse3, eTHouse4, eTHouse5, eTLac, eTMarais, eTMontagne, eTPlaines, eTD1, eTD2, eTD3, eTD4, eTD5, eTD6, eTD7, eTD8, eTD9, eTD10OUT, eTD10 };
 std::vector<std::string> tilesetNames;
 std::vector<int> tilesetWidths;
 std::vector<int> tilesetHeights;
+std::vector<map> maps;
 enum link_walk { idle = 0, walk1, walk2, walk3, walk4, walk5, walk6, walk7, walk8, walk9, walk10 };
-
+extern std::vector<map> maps;
 void initTilesetData()
 {
 	tilesetNames.push_back("out/desert.png");
@@ -92,8 +93,7 @@ int main(int argc, char *argv[])
 {
 	initTilesetData();//initialisation des données des tilesets : noms, taille
 	SDL_Window *window;
-	std::vector<map> maps;
-	maps = init_maps_out();
+	init_maps_out();
 	
 	int i = 0;
 	if ((window = initWindow()) == NULL)

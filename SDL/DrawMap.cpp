@@ -153,14 +153,22 @@ void DataToDraw::setMapCeiling(SDL_Surface *mapCeiling)
 	this->pMapCeiling = mapCeiling;
 }
 
-DataToDraw *DataToDraw::operator=(DataToDraw data)
-{
-	this->actualMap = data.getMap();
-	this->window = data.getWindow();
-	this->hero = data.getHero();
-	this->drawAll = data.getDrawAll();
-	return (this);
-}
+//DataToDraw *DataToDraw::operator=(DataToDraw *data)
+//{
+//	this->actualMap = data->getMap();
+//	this->window = data->getWindow();
+//	this->hero = data->getHero();
+//	this->pRenderer = data->getRenderer();
+//	this->pFond = data->getFond();
+//	this->pLink = data->getLink();
+//	this->pTextureCeiling = data->getTextureCeiling();
+//	this->pTextureFloor = data->getTextureFloor();
+//	this->pTextureLink = data->getTextureLink();
+//	this->pMapFloor = data->getMapFloor();
+//	this->pMapCeiling = data->getMapCeiling();
+//	this->drawAll = data->getDrawAll();
+//	return (this);
+//}
 
 SDL_Window *initWindow()
 {
@@ -182,7 +190,7 @@ int closeWindow(SDL_Window *window)
 	return (0);
 }
 
-void init(DataToDraw *dat)
+void init_renderer(DataToDraw *dat)
 {
 	dat->setRenderer(SDL_CreateRenderer(dat->getWindow(), -1, SDL_RENDERER_ACCELERATED));
 	if (!dat->getRenderer())
@@ -190,6 +198,12 @@ void init(DataToDraw *dat)
 		std::cerr << "renderer creation failed" << std::endl;
 		exit(-1);
 	}
+}
+
+void init(DataToDraw *dat)
+{
+	if (dat->getRenderer() == NULL)
+		init_renderer(dat);
 	dat->setFond(IMG_Load(dat->getMap()->getTilesetName().c_str()));
 	if (!dat->getFond())
 	{
@@ -296,13 +310,13 @@ int DrawMap(void *data, int pictureHeroX, int pictureHeroY)
 		dstHero.x = 320 - 24;
 	//partie haute map
 	if (dat->getHero()->getPosY() <= 15)
-		dstHero.y = (int)(((dat->getHero()->getPosY()) * 16) - 48);
+		dstHero.y = (int)(((dat->getHero()->getPosY()) * 16) - 64);
 	//partie basse map
 	else if (dat->getHero()->getPosY() > dat->getMap()->getHeight() - 15)
-		dstHero.y = (int)(((30 - (((dat->getMap()->getHeight()) - (dat->getHero()->getPosY())))) * 16) - 48);
+		dstHero.y = (int)(((30 - (((dat->getMap()->getHeight()) - (dat->getHero()->getPosY())))) * 16) - 64);
 	//milieu map
 	else
-		dstHero.y = 240 - 48;
+		dstHero.y = 240 - 64;
 	dstHero.w = 48;
 	dstHero.h = 64;
 	SDL_RenderCopy(dat->getRenderer(), dat->getTextureFloor(), &srcRect, &dstRect);

@@ -47,7 +47,7 @@ public:
 	void setMapFloor(SDL_Surface *);
 	SDL_Surface *getMapCeiling();
 	void setMapCeiling(SDL_Surface *);
-	DataToDraw *operator=(DataToDraw);
+	//DataToDraw *operator=(DataToDraw *);
 };
 
 int DrawMap(void *data, int, int);

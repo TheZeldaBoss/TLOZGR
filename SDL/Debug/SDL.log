@@ -1,17 +1,22 @@
-﻿La génération a démarré 29/09/2016 13:02:02.
+﻿La génération a démarré 30/09/2016 15:09:46.
      1>Projet "C:\Users\benoit\Documents\Visual Studio 2013\Projects\SDL\SDL\SDL.vcxproj" sur le nœud 2 (Build cible(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt DrawMap.cpp
-         DrawMap.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt event.cpp transitions.cpp
+         event.cpp
+         Génération de code en cours...
+         Compilation en cours...
+         transitions.cpp
+         Génération de code en cours...
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\benoit\Documents\Visual Studio 2013\Projects\SDL\Debug\SDL.exe" /INCREMENTAL /NOLOGO SDL2_imaged.lib SDL2d.lib SDL2maind.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\benoit\Documents\Visual Studio 2013\Projects\SDL\Debug\SDL.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\benoit\Documents\Visual Studio 2013\Projects\SDL\Debug\SDL.lib" /MACHINE:X86 Debug\DrawMap.obj
          Debug\event.obj
          Debug\Hero.obj
          Debug\main.obj
          Debug\Map.obj
+         Debug\transitions.obj
          SDL.vcxproj -> C:\Users\benoit\Documents\Visual Studio 2013\Projects\SDL\Debug\SDL.exe
      1>Génération du projet "C:\Users\benoit\Documents\Visual Studio 2013\Projects\SDL\SDL\SDL.vcxproj" terminée (Build cible(s)).
 
 La génération a réussi.
 
-Temps écoulé 00:00:00.89
+Temps écoulé 00:00:01.53

@@ -16,12 +16,14 @@
     <ClCompile Include="Hero.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="transitions.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DrawMap.h" />
     <ClInclude Include="event.h" />
     <ClInclude Include="Hero.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="transitions.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F711FF9E-7883-43D1-8A3F-9AF40F87455E}</ProjectGuid>

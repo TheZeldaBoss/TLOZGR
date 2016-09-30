@@ -3,6 +3,9 @@
 #include "DrawMap.h"
 #include "Hero.h"
 #include "Map.h"
+#include "transitions.h"
+
+extern std::vector<map> maps;
 
 bool execEvent(SDL_Event event, void *data)
 {
@@ -27,6 +30,10 @@ bool execEvent(SDL_Event event, void *data)
 			}
 			if (dat->getHero()->getPosYScreen() == actualPosScreenY && dat->getHero()->getPosXScreen() == actualPosScreenX)
 				dat->setDrawAll(true);
+		}
+		else if (dat->getMap()->getMapWest())
+		{
+			dat = transit(dat, &(maps[dat->getMap()->getMapWest() - 1]), -2);
 		}
 		if (dat->getHero()->getCount() > 2)
 		{
@@ -54,6 +61,10 @@ bool execEvent(SDL_Event event, void *data)
 					dat->getHero()->setPosXScreen(dat->getHero()->getPosX());
 			}
 		}
+		else if (dat->getMap()->getMapEast() != NULL)
+		{
+			dat = transit(dat, &(maps[dat->getMap()->getMapEast() - 1]), 2);
+		}
 		if (dat->getHero()->getPosYScreen() == actualPosScreenY && dat->getHero()->getPosXScreen() == actualPosScreenX)
 			dat->setDrawAll(true);
 		if (dat->getHero()->getCount() > 2)
@@ -71,7 +82,7 @@ bool execEvent(SDL_Event event, void *data)
 	}
 	if (keystate[SDL_SCANCODE_UP])
 	{
-		if (dat->getHero()->getPosY() >= 1)
+		if (dat->getHero()->getPosY() >= 3)
 		{
 			if (dat->getMap()->getLayerWalls()[(int)(dat->getHero()->getPosY() - 1.5)][(int)(dat->getHero()->getPosX())] == 0)
 			{
@@ -81,6 +92,10 @@ bool execEvent(SDL_Event event, void *data)
 				if (dat->getHero()->getPosY() <= 15)
 					dat->getHero()->setPosYScreen(dat->getHero()->getPosY());
 			}
+		}
+		else if (dat->getMap()->getMapNorth() != NULL)
+		{
+			dat = transit(dat, &(maps[dat->getMap()->getMapNorth() - 1]), -1);
 		}
 		if (dat->getHero()->getPosYScreen() == actualPosScreenY && dat->getHero()->getPosXScreen() == actualPosScreenX)
 			dat->setDrawAll(true);
@@ -106,6 +121,10 @@ bool execEvent(SDL_Event event, void *data)
 				if (dat->getHero()->getPosY() <= 15)
 					dat->getHero()->setPosYScreen(dat->getHero()->getPosY());
 			}
+		}
+		else if (dat->getMap()->getMapSouth() != NULL)
+		{
+			dat = transit(dat, &(maps[dat->getMap()->getMapSouth() - 1]), 1);
 		}
 		if (dat->getHero()->getPosYScreen() == actualPosScreenY && dat->getHero()->getPosXScreen() == actualPosScreenX)
 			dat->setDrawAll(true);
