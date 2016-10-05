@@ -99,9 +99,9 @@ int main(int argc, char *argv[])
 	if ((window = initWindow()) == NULL)
 		return -1;
 	SDL_Event event;
-	Hero hero(10, 7, maps[7]);
+	Hero hero(40, 30, maps[6]);
 	bool exit_program = false;
-	DataToDraw dat(&(maps[7]), window, &hero, true);
+	DataToDraw dat(&(maps[6]), window, &hero, true);
 	init(&dat);
 	DrawMap(&dat, 0, 0);
 	dat.setDrawAll(false);

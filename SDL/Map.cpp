@@ -211,7 +211,7 @@ int map::getMapWest()
 
 void map::setMapWest(int newMap)
 {
-	this->mapEast = newMap;
+	this->mapWest = newMap;
 }
 
 std::vector<map> init_maps_out()

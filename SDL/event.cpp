@@ -111,7 +111,7 @@ bool execEvent(SDL_Event event, void *data)
 	}
 	if (keystate[SDL_SCANCODE_DOWN])
 	{
-		if (dat->getHero()->getPosY() < dat->getMap()->getHeight() - 1)
+		if (dat->getHero()->getPosY() < dat->getMap()->getHeight() - .125)
 		{
 			if (dat->getMap()->getLayerWalls()[(int)(dat->getHero()->getPosY() + 0.125)][(int)(dat->getHero()->getPosX())] == 0)
 			{
