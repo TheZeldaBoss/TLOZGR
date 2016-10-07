@@ -106,3 +106,23 @@ void Hero::setCount(int count)
 {
 	this->count = count;
 }
+
+int Hero::getObj1()
+{
+	return (this->obj1);
+}
+
+int Hero::getObj2()
+{
+	return (this->obj2);
+}
+
+void Hero::setObj1(int obj)
+{
+	this->obj1 = obj;
+}
+
+void Hero::setObj2(int obj)
+{
+	this->obj2 = obj;
+}

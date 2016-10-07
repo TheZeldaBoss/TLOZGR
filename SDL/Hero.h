@@ -2,7 +2,7 @@
 #define HERO_H_
 
 #include "Map.h"
-
+#include "Objets.h"
 class Hero
 {
 private:
@@ -14,6 +14,9 @@ private:
 	int actualImage;
 	int actualPos;
 	int count;
+	objets equipement;
+	int obj1;
+	int obj2;
 public:
 	Hero(float posX, float posY, map actualMap);
 	float getPosX();
@@ -32,6 +35,10 @@ public:
 	void setActualPos(int);
 	int getCount();
 	void setCount(int);
+	int getObj1();
+	void setObj1(int);
+	int getObj2();
+	void setObj2(int);
 };
 
 #endif /*HERO_H_*/

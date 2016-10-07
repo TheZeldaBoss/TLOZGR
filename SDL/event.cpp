@@ -139,9 +139,20 @@ bool execEvent(SDL_Event event, void *data)
 			dat->getHero()->setCount(dat->getHero()->getCount() + 1);
 		dat->getHero()->setActualPos(0);
 	}
+	
+
 	if (!(keystate[SDL_SCANCODE_LEFT]) && !(keystate[SDL_SCANCODE_RIGHT]) && !(keystate[SDL_SCANCODE_UP]) && !(keystate[SDL_SCANCODE_DOWN]))
 		dat->getHero()->setActualImage(0);
 	DrawMap(data, dat->getHero()->getActualImage(), dat->getHero()->getActualPos());
+	if (keystate[SDL_SCANCODE_1])//objet 1
+	{
+		use_objet(dat->getHero()->getObj1(), dat);
+	}
+
+	if (keystate[SDL_SCANCODE_2])//objet 2
+	{
+		use_objet(dat->getHero()->getObj2(), data);
+	}
 	switch (event.type)
 	{
 	case SDL_QUIT:
@@ -151,5 +162,6 @@ bool execEvent(SDL_Event event, void *data)
 	default:
 		break;
 	}
+	SDL_RenderPresent(dat->getRenderer());
 	return (false);
 }

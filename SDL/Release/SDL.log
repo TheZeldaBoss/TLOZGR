@@ -1,14 +1,15 @@
-﻿La génération a démarré 05/10/2016 12:34:59.
+﻿La génération a démarré 07/10/2016 15:00:40.
      1>Projet "C:\Users\benoit\Documents\Visual Studio 2013\Projects\SDL\SDL\SDL.vcxproj" sur le nœud 2 (Build cible(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /Od /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt transitions.cpp
-         transitions.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /Od /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Objets.cpp
+         Objets.cpp
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\benoit\Documents\Visual Studio 2013\Projects\SDL\Release\SDL.exe" /INCREMENTAL:NO /NOLOGO SDL2_image.lib SDL2.lib SDL2main.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\benoit\Documents\Visual Studio 2013\Projects\SDL\Release\SDL.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\benoit\Documents\Visual Studio 2013\Projects\SDL\Release\SDL.lib" /MACHINE:X86 /SAFESEH Release\DrawMap.obj
          Release\event.obj
          Release\Hero.obj
          Release\main.obj
          Release\Map.obj
+         Release\Objets.obj
          Release\transitions.obj
          Génération de code en cours
          Fin de la génération du code
@@ -17,4 +18,4 @@
 
 La génération a réussi.
 
-Temps écoulé 00:00:02.93
+Temps écoulé 00:00:01.31

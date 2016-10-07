@@ -16,6 +16,7 @@
     <ClCompile Include="Hero.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="Objets.cpp" />
     <ClCompile Include="transitions.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -23,6 +24,7 @@
     <ClInclude Include="event.h" />
     <ClInclude Include="Hero.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="Objets.h" />
     <ClInclude Include="transitions.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

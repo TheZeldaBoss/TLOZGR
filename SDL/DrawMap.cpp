@@ -178,7 +178,7 @@ SDL_Window *initWindow()
 		std::cout << "SDL init error" << std::endl;
 		exit(1);
 	}
-	window = SDL_CreateWindow("LOZ Ganon's Revenge", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_SHOWN);
+	window = SDL_CreateWindow("Legend of Zelda : Ganon's Revenge", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_SHOWN);
 
 	return (window);
 }
@@ -322,7 +322,6 @@ int DrawMap(void *data, int pictureHeroX, int pictureHeroY)
 	SDL_RenderCopy(dat->getRenderer(), dat->getTextureFloor(), &srcRect, &dstRect);
 	SDL_RenderCopy(dat->getRenderer(), dat->getTextureLink(), &srcHero, &dstHero);
 	SDL_RenderCopy(dat->getRenderer(), dat->getTextureCeiling(), &srcRect, &dstRect);
-	SDL_RenderPresent(dat->getRenderer());
 	/*SDL_Surface *screen = SDL_GetWindowSurface(dat->getWindow());
 	SDL_BlitSurface(dat->getMapFloor(), NULL, screen, NULL);
 	SDL_UpdateWindowSurface(dat->getWindow());*/
