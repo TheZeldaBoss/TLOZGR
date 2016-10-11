@@ -17,12 +17,63 @@ uint32 rmask = 0xff000000, gmask = 0x00ff0000, bmask = 0x0000ff00, amask = 0x000
 Uint32 rmask = 0x000000ff, gmask = 0x0000ff00, bmask = 0x00ff0000, amask = 0xff000000;
 #endif
 
+arrowToDraw::arrowToDraw()
+{
+	this->posX = -1;
+	this->posY = -1;
+	this->actualImage = -1;
+	this->actualPos = 0;
+	drawIt = false;
+}
+
+int arrowToDraw::getActualPos()
+{
+	return actualPos;
+}
+
+void arrowToDraw::setActualPos(int i)
+{
+	this->actualPos = i;
+}
+
+float arrowToDraw::getPosX()
+{
+	return (this->posX);
+}
+
+void arrowToDraw::setPosX(float x)
+{
+	this->posX = x;
+}
+
+float arrowToDraw::getPosY()
+{
+	return (posY);
+}
+
+void  arrowToDraw::setPosY(float y)
+{
+	posY = y;
+}
+
+int   arrowToDraw::getActualImage()
+{
+	return (actualImage);
+}
+
+void  arrowToDraw::setActualImage(int newImage)
+{
+	actualImage = newImage;
+}
+
 DataToDraw::DataToDraw()
 {
 	this->actualMap = NULL;
 	this->window = NULL;
 	this->hero = NULL;
 	this->drawAll = false;
+	this->needDraw = true;
+	useObject = false;
 }
 
 DataToDraw::DataToDraw(map *newMap, SDL_Window *win, Hero *hero, bool drawAll)
@@ -31,6 +82,8 @@ DataToDraw::DataToDraw(map *newMap, SDL_Window *win, Hero *hero, bool drawAll)
 	this->window = win;
 	this->hero = hero;
 	this->drawAll = drawAll;
+	this->needDraw = true;
+	useObject = false;
 }
 
 map *DataToDraw::getMap()
@@ -153,22 +206,15 @@ void DataToDraw::setMapCeiling(SDL_Surface *mapCeiling)
 	this->pMapCeiling = mapCeiling;
 }
 
-//DataToDraw *DataToDraw::operator=(DataToDraw *data)
-//{
-//	this->actualMap = data->getMap();
-//	this->window = data->getWindow();
-//	this->hero = data->getHero();
-//	this->pRenderer = data->getRenderer();
-//	this->pFond = data->getFond();
-//	this->pLink = data->getLink();
-//	this->pTextureCeiling = data->getTextureCeiling();
-//	this->pTextureFloor = data->getTextureFloor();
-//	this->pTextureLink = data->getTextureLink();
-//	this->pMapFloor = data->getMapFloor();
-//	this->pMapCeiling = data->getMapCeiling();
-//	this->drawAll = data->getDrawAll();
-//	return (this);
-//}
+SDL_Texture *DataToDraw::getTextureArrow()
+{
+	return (this->pTextureArrow);
+}
+
+void DataToDraw::setTextureArrow(SDL_Texture *texture)
+{
+	this->pTextureArrow = texture;
+}
 
 SDL_Window *initWindow()
 {
@@ -212,6 +258,7 @@ void init(DataToDraw *dat)
 	}
 	dat->setLink(IMG_Load("./data/images/Link/Link_walk.png"));
 	dat->setTextureLink(SDL_CreateTextureFromSurface(dat->getRenderer(), dat->getLink()));
+	dat->setTextureArrow(SDL_CreateTextureFromSurface(dat->getRenderer(), IMG_Load("./data/images/equipement/arrows.png")));
 	dat->setMapCeiling(SDL_CreateRGBSurface(0, dat->getMap()->getWidth() * 8, dat->getMap()->getHeight() * 8, 32, rmask, gmask, bmask, amask));
 	dat->setMapFloor(SDL_CreateRGBSurface(0, dat->getMap()->getWidth() * 8, dat->getMap()->getHeight() * 8, 32, rmask, gmask, bmask, amask));
 	for (int i = 0; i < dat->getMap()->getWidth(); i++)
@@ -266,6 +313,7 @@ void destroy(DataToDraw *dat)
 
 int DrawMap(void *data, int pictureHeroX, int pictureHeroY)
 {
+	Uint32 time = SDL_GetTicks();
 	DataToDraw *dat;
 	dat = (DataToDraw *)data;
 
@@ -288,6 +336,7 @@ int DrawMap(void *data, int pictureHeroX, int pictureHeroY)
 		yOrig = (float)(dat->getHero()->getPosY()) - 15;
 	SDL_Rect srcRect, dstRect;
 	SDL_Rect srcHero, dstHero;
+	SDL_Rect srcArrow, dstArrow;
 	srcRect.x = (int)(xOrig * 8);
 	srcRect.y = (int)(yOrig * 8);
 	srcRect.w = 320;
@@ -295,10 +344,19 @@ int DrawMap(void *data, int pictureHeroX, int pictureHeroY)
 	dstRect.x = dstRect.y = 0;
 	dstRect.w = 640;
 	dstRect.h = 480;
-	srcHero.x = pictureHeroX * 24;
-	srcHero.y = pictureHeroY * 32;
-	srcHero.w = 24;
+	if (dat->getHero()->getActualPos() < 4)
+		srcHero.w = 24;
+	else if (4 <= dat->getHero()->getActualPos() && dat->getHero()->getActualPos() < 8 && dat->getHero()->getActualPos() % 2 == 1)
+		srcHero.w = 32;
+	else
+		srcHero.w = 24;
 	srcHero.h = 32;
+	srcHero.x = pictureHeroX * srcHero.w;
+	srcHero.y = pictureHeroY * srcHero.h;
+	srcArrow.x = dat->arrow.getActualImage() * 16;
+	srcArrow.y = dat->arrow.getActualPos() * 16;
+	srcArrow.w = srcArrow.h = 16;
+	
 	//partie gauche map
 	if (dat->getHero()->getPosX() <= 20)
 		dstHero.x = (int)(((dat->getHero()->getPosX()) * 16) - 24);
@@ -308,6 +366,8 @@ int DrawMap(void *data, int pictureHeroX, int pictureHeroY)
 	//milieu map
 	else
 		dstHero.x = 320 - 24;
+	if (dat->useObject == true && (dat->getHero()->getActualPos() % 4) == 1)
+		dstHero.x -= 24;
 	//partie haute map
 	if (dat->getHero()->getPosY() <= 15)
 		dstHero.y = (int)(((dat->getHero()->getPosY()) * 16) - 64);
@@ -317,15 +377,25 @@ int DrawMap(void *data, int pictureHeroX, int pictureHeroY)
 	//milieu map
 	else
 		dstHero.y = 240 - 64;
-	dstHero.w = 48;
+	if (dat->useObject == true && dat->getHero()->getActualPos() % 4 == 0)
+		dstHero.y += 16;
+	dstHero.w = srcHero.w * 2;
 	dstHero.h = 64;
+
+	//gestion position flèche
+	if ((dat->arrow.getPosX() >= dat->getHero()->getPosX() - 20) && dat->arrow.getPosX() <= dat->getHero()->getPosX() + 20)
+		dstArrow.x = dstHero.x - (int)((dat->getHero()->getPosX() - dat->arrow.getPosX()) * 16);
+	if ((dat->arrow.getPosY() >= dat->getHero()->getPosY() - 20) && dat->arrow.getPosY() <= dat->getHero()->getPosY() + 20)
+		dstArrow.y = dstHero.y - (int)((dat->getHero()->getPosY() - dat->arrow.getPosY()) * 16);
+	dstArrow.w = 32;
+	dstArrow.h = 32;
 	SDL_RenderCopy(dat->getRenderer(), dat->getTextureFloor(), &srcRect, &dstRect);
 	SDL_RenderCopy(dat->getRenderer(), dat->getTextureLink(), &srcHero, &dstHero);
+	if (dat->arrow.getActualImage() >= 0)
+		SDL_RenderCopy(dat->getRenderer(), dat->getTextureArrow(), &srcArrow, &dstArrow);
 	SDL_RenderCopy(dat->getRenderer(), dat->getTextureCeiling(), &srcRect, &dstRect);
-	/*SDL_Surface *screen = SDL_GetWindowSurface(dat->getWindow());
-	SDL_BlitSurface(dat->getMapFloor(), NULL, screen, NULL);
-	SDL_UpdateWindowSurface(dat->getWindow());*/
 	dat->setDrawAll(false);
+	time = SDL_GetTicks() - time;
 	return (0);
 }
 

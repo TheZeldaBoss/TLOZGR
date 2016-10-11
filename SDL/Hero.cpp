@@ -1,4 +1,6 @@
 #include "Hero.h"
+#include "DrawMap.h"
+
 #include <iostream>
 Hero::Hero(float posX, float posY, map actualMap)
 {

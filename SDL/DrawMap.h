@@ -5,6 +5,27 @@
 #include <SDL2/SDL.h>
 #include "Hero.h"
 
+class arrowToDraw
+{
+private:
+	int actualImage;
+	int actualPos;
+	float posX;
+	float posY;
+public:
+	arrowToDraw();
+	bool arrowExists;
+	float getPosX();
+	void setPosX(float);
+	float getPosY();
+	void setPosY(float);
+	int getActualImage();
+	void setActualImage(int);
+	int getActualPos();
+	void setActualPos(int);
+	bool drawIt;
+};
+
 class DataToDraw
 {
 private:
@@ -16,9 +37,11 @@ private:
 	SDL_Surface *pLink;
 	SDL_Texture *pTextureFloor;
 	SDL_Texture *pTextureCeiling;
+	SDL_Texture *pTextureArrow;
 	SDL_Texture *pTextureLink;
 	SDL_Surface *pMapFloor;
 	SDL_Surface *pMapCeiling;
+	
 	bool drawAll;//0 : draw all, 1 : draw only 
 public:
 	DataToDraw();
@@ -41,12 +64,17 @@ public:
 	void setTextureFloor(SDL_Texture *);
 	SDL_Texture *getTextureCeiling();
 	void setTextureCeiling(SDL_Texture *);
+	SDL_Texture *getTextureArrow();
+	void setTextureArrow(SDL_Texture *);
 	SDL_Texture *getTextureLink();
 	void setTextureLink(SDL_Texture *);
 	SDL_Surface *getMapFloor();
 	void setMapFloor(SDL_Surface *);
 	SDL_Surface *getMapCeiling();
 	void setMapCeiling(SDL_Surface *);
+	arrowToDraw arrow;
+	bool useObject;
+	bool needDraw;
 	//DataToDraw *operator=(DataToDraw *);
 };
 

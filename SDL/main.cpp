@@ -89,13 +89,28 @@ void initTilesetData()
 	tilesetHeights.push_back(60);
 }
 
+int threadDraw(void *data)
+{
+
+	DataToDraw *dat = (DataToDraw *)data;
+	while (1)
+	{
+		if (dat->needDraw == true)
+		{
+			DrawMap(dat, dat->getHero()->getActualImage(), dat->getHero()->getActualPos());
+			dat->needDraw = false;
+		}
+		SDL_RenderPresent(dat->getRenderer());
+		Sleep(5);
+	}
+}
+
 int main(int argc, char *argv[]) 
 {
 	initTilesetData();//initialisation des données des tilesets : noms, taille
 	SDL_Window *window;
 	init_maps_out();
 	
-	int i = 0;
 	if ((window = initWindow()) == NULL)
 		return -1;
 	SDL_Event event;
@@ -106,6 +121,8 @@ int main(int argc, char *argv[])
 	init(&dat);
 	DrawMap(&dat, 0, 0);
 	dat.setDrawAll(false);
+
+	SDL_CreateThread(threadDraw, "draw image", &dat);
 	while (!exit_program)
 	{
 		Uint32 time = SDL_GetTicks();
@@ -113,7 +130,7 @@ int main(int argc, char *argv[])
 		exit_program = execEvent(event, (void *)(&dat));
 		time = SDL_GetTicks() - time;
 		if (time < 15)
-			Sleep((15 - time));
+			Sleep(15 - time);
 	}
 	destroy(&dat);
 	return 0;
