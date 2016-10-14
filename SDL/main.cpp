@@ -7,6 +7,7 @@
 #include "Map.h"
 #include "Hero.h"
 #include "event.h"
+#include "transitions.h"
 #include <SDL2/SDL_thread.h>
 
 enum tilesets { eTDesert = 0, eTForet, eTGrottes, eTHouse1, eTHouse2, eTHouse3, eTHouse4, eTHouse5, eTLac, eTMarais, eTMontagne, eTPlaines, eTD1, eTD2, eTD3, eTD4, eTD5, eTD6, eTD7, eTD8, eTD9, eTD10OUT, eTD10 };
@@ -16,6 +17,8 @@ std::vector<int> tilesetHeights;
 std::vector<map> maps;
 enum link_walk { idle = 0, walk1, walk2, walk3, walk4, walk5, walk6, walk7, walk8, walk9, walk10 };
 extern std::vector<map> maps;
+
+
 void initTilesetData()
 {
 	tilesetNames.push_back("out/desert.png");
@@ -95,7 +98,30 @@ int threadDraw(void *data)
 	DataToDraw *dat = (DataToDraw *)data;
 	while (1)
 	{
-		if (dat->needDraw == true)
+		if (dat->doTransition)
+		{
+			switch (dat->doTransition)
+			{
+			case 1:
+				transit(dat, &maps[dat->getMap()->getMapSouth() - 1], dat->doTransition);
+				break;
+			case 2:
+				transit(dat, &maps[dat->getMap()->getMapEast() - 1], dat->doTransition);
+				break;
+			case -1:
+				transit(dat, &maps[dat->getMap()->getMapNorth() - 1], dat->doTransition);
+				break;
+			case -2:
+				transit(dat, &maps[dat->getMap()->getMapWest() - 1], dat->doTransition);
+				break;
+			default:
+				std::cerr << "Unknown trnasition code" << std::endl;
+				exit(1);
+				break;
+			}
+			dat->doTransition = 0;
+		}
+		else if (dat->needDraw == true)
 		{
 			DrawMap(dat, dat->getHero()->getActualImage(), dat->getHero()->getActualPos());
 			dat->needDraw = false;
@@ -115,7 +141,7 @@ int main(int argc, char *argv[])
 		return -1;
 	SDL_Event event;
 	Hero hero(40, 30, maps[6]);
-	hero.setObj1(arc);
+	hero.setObj1(lancePierres);
 	bool exit_program = false;
 	DataToDraw dat(&(maps[6]), window, &hero, true);
 	init(&dat);

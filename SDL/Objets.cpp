@@ -125,7 +125,7 @@ int use_bow(void *Data)
 			while (dat->arrow.getPosY() < dat->getMap()->getHeight())
 			{
 				dat->needDraw = true;
-				dat->arrow.setPosY(dat->arrow.getPosY() + .125);
+				dat->arrow.setPosY((float)(dat->arrow.getPosY() + .125));
 				Sleep(5);
 			}
 			dat->arrow.arrowExists = false;
@@ -135,7 +135,7 @@ int use_bow(void *Data)
 			while (dat->arrow.getPosX() > 0)
 			{
 				dat->needDraw = true;
-				dat->arrow.setPosX(dat->arrow.getPosX() - .125);
+				dat->arrow.setPosX((float)(dat->arrow.getPosX() - .125));
 				Sleep(5);
 			}
 			dat->arrow.arrowExists = false;
@@ -145,7 +145,7 @@ int use_bow(void *Data)
 			while (dat->arrow.getPosY() > 0)
 			{
 				dat->needDraw = true;
-				dat->arrow.setPosY(dat->arrow.getPosY() - .125);
+				dat->arrow.setPosY((float)(dat->arrow.getPosY() - .125));
 				Sleep(5);
 			}
 			dat->arrow.arrowExists = false;
@@ -155,7 +155,7 @@ int use_bow(void *Data)
 			while (dat->arrow.getPosX() < dat->getMap()->getWidth())
 			{
 				dat->needDraw = true;
-				dat->arrow.setPosX(dat->arrow.getPosX() + .125);
+				dat->arrow.setPosX((float)(dat->arrow.getPosX() + .125));
 				Sleep(5);
 			}
 			dat->arrow.arrowExists = false;
@@ -168,12 +168,118 @@ int use_bow(void *Data)
 int use_bombs(void *data)
 {
 	DataToDraw *dat = (DataToDraw *)data;
+	dat->explosion.actualImage = -1;
+	dat->bomb.posX = dat->getHero()->getPosX();
+	dat->bomb.posY = dat->getHero()->getPosY() + 1;
+	if (dat->bomb.bombExists == false)
+	{
+		dat->bomb.bombExists = true;
+		for (int i = 0; i < 53; i++)
+		{
+			dat->needDraw = true;
+			dat->bomb.actualImage = (i + 1) % 2;
+			Sleep(50);
+		}
+		for (int i = 0; i < 32; i++)
+		{
+			dat->needDraw = true;
+			dat->bomb.actualImage = (((i / 4) % 2) * 2) + (i % 2);
+			Sleep(50);
+		}
+		for (int i = 0; i < 16; i++)
+		{
+			dat->needDraw = true;
+			dat->bomb.actualImage = i % 4;
+			Sleep(50);
+		}
+		dat->bomb.actualImage = -1;
+		dat->bomb.bombExists = false;
+	}
+	if (dat->explosion.bombExists == false)
+	{
+		dat->explosion.bombExists = true;
+		for (int i = 0; i < 11; i++)
+		{
+			dat->needDraw = true;
+			dat->explosion.actualImage = i;
+			Sleep(50);
+		}
+		dat->explosion.bombExists = false;
+	}
+	dat->explosion.actualImage = -1;
+	dat->needDraw = true;
 	return (0);
 }
 
 int use_slingshot(void *data)
 {
 	DataToDraw *dat = (DataToDraw *)data;
+	if (dejala) return 0;
+
+	dejala = true;
+
+	int curPos = 8 + dat->getHero()->getActualPos();
+	dat->useObject = true;
+	unsigned int anim = 0;
+	while (anim < 4)
+	{
+		dat->getHero()->setActualPos(curPos);
+		dat->getHero()->setActualImage(anim);
+		dat->needDraw = true;
+		Sleep(80);
+		anim++;
+	}
+	dat->useObject = false;
+	dat->getHero()->setActualImage(0);
+	dat->getHero()->setActualPos(curPos - 8);
+	dat->needDraw = true;
+	if (dat->seed.seedExists == false)
+	{
+		dat->seed.seedExists = true;
+		dat->seed.posX = (float)(dat->getHero()->getPosX() + .5);
+		dat->seed.posY = dat->getHero()->getPosY() + 2;
+		if (dat->getHero()->getActualPos() % 4 == 0)//bas
+		{
+			while (dat->seed.posY < (float)(dat->getMap()->getHeight() - 1) && dat->getMap()->getLayerWalls()[(int)dat->seed.posY][(int)dat->seed.posX] == 0)
+			{
+				dat->needDraw = true;
+				dat->seed.posY += .125;
+				Sleep(2);
+			}
+			dat->seed.seedExists = false;
+		}
+		if (dat->getHero()->getActualPos() % 4 == 1)//gauche
+		{
+			while (dat->seed.posX > 0 && dat->getMap()->getLayerWalls()[(int)(dat->seed.posY)][(int)(dat->seed.posX)] == 0)
+			{
+				dat->needDraw = true;
+				dat->seed.posX -= .125;
+				Sleep(2);
+			}
+			dat->seed.seedExists = false;
+		}
+		if (dat->getHero()->getActualPos() % 4 == 2)//haut
+		{
+			while (dat->seed.posY > 0 && dat->getMap()->getLayerWalls()[(int)(dat->seed.posY)][(int)(dat->seed.posX)] == 0)
+			{
+				dat->needDraw = true;
+				dat->seed.posY -= .125;
+				Sleep(2);
+			}
+			dat->seed.seedExists = false;
+		}
+		if (dat->getHero()->getActualPos() % 4 == 3)//droite
+		{
+			while (dat->seed.posX < dat->getMap()->getWidth() && dat->getMap()->getLayerWalls()[(int)(dat->seed.posY)][(int)(dat->seed.posX)] == 0)
+			{
+				dat->needDraw = true;
+				dat->seed.posX += .125;
+				Sleep(2);
+			}
+			dat->seed.seedExists = false;
+		}
+	}
+	dejala = false;
 	return (0);
 }
 

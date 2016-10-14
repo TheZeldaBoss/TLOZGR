@@ -17,6 +17,20 @@ uint32 rmask = 0xff000000, gmask = 0x00ff0000, bmask = 0x0000ff00, amask = 0x000
 Uint32 rmask = 0x000000ff, gmask = 0x0000ff00, bmask = 0x00ff0000, amask = 0xff000000;
 #endif
 
+seedToDraw::seedToDraw()
+{
+	this->posX = -1;
+	this->posY = -1;
+	this->seedExists = 0;
+}
+
+bombToDraw::bombToDraw()
+{
+	this->posX = -1;
+	this->posY = -1;
+	this->actualImage = -1;
+}
+
 arrowToDraw::arrowToDraw()
 {
 	this->posX = -1;
@@ -73,6 +87,7 @@ DataToDraw::DataToDraw()
 	this->hero = NULL;
 	this->drawAll = false;
 	this->needDraw = true;
+	this->doTransition = 0;
 	useObject = false;
 }
 
@@ -216,6 +231,36 @@ void DataToDraw::setTextureArrow(SDL_Texture *texture)
 	this->pTextureArrow = texture;
 }
 
+SDL_Texture *DataToDraw::getTextureBomb()
+{
+	return (this->pTextureBomb);
+}
+
+void DataToDraw::setTextureBomb(SDL_Texture *texture)
+{
+	this->pTextureBomb = texture;
+}
+
+SDL_Texture *DataToDraw::getTextureExplosion()
+{
+	return (this->pTextureExplosion);
+}
+
+void DataToDraw::setTextureExplosion(SDL_Texture *texture)
+{
+	this->pTextureExplosion = texture;
+}
+
+SDL_Texture *DataToDraw::getTextureSeed()
+{
+	return pTextureSeed;
+}
+
+void DataToDraw::setTextureSeed(SDL_Texture *texture)
+{
+	pTextureSeed = texture;
+}
+
 SDL_Window *initWindow()
 {
 	SDL_Window *window(0);
@@ -259,6 +304,9 @@ void init(DataToDraw *dat)
 	dat->setLink(IMG_Load("./data/images/Link/Link_walk.png"));
 	dat->setTextureLink(SDL_CreateTextureFromSurface(dat->getRenderer(), dat->getLink()));
 	dat->setTextureArrow(SDL_CreateTextureFromSurface(dat->getRenderer(), IMG_Load("./data/images/equipement/arrows.png")));
+	dat->setTextureBomb(SDL_CreateTextureFromSurface(dat->getRenderer(), IMG_Load("./data/images/equipement/bombs.png")));
+	dat->setTextureExplosion(SDL_CreateTextureFromSurface(dat->getRenderer(), IMG_Load("./data/images/equipement/explosion.png")));
+	dat->setTextureSeed(SDL_CreateTextureFromSurface(dat->getRenderer(), IMG_Load("./data/images/equipement/seed.png")));
 	dat->setMapCeiling(SDL_CreateRGBSurface(0, dat->getMap()->getWidth() * 8, dat->getMap()->getHeight() * 8, 32, rmask, gmask, bmask, amask));
 	dat->setMapFloor(SDL_CreateRGBSurface(0, dat->getMap()->getWidth() * 8, dat->getMap()->getHeight() * 8, 32, rmask, gmask, bmask, amask));
 	for (int i = 0; i < dat->getMap()->getWidth(); i++)
@@ -337,6 +385,11 @@ int DrawMap(void *data, int pictureHeroX, int pictureHeroY)
 	SDL_Rect srcRect, dstRect;
 	SDL_Rect srcHero, dstHero;
 	SDL_Rect srcArrow, dstArrow;
+	SDL_Rect srcSeed, dstSeed;
+	SDL_Rect srcBomb, dstBomb;
+	SDL_Rect srcExplo, dstExplo;
+	srcSeed.x = srcSeed.y = 0;
+	srcSeed.w = srcSeed.h = 16;
 	srcRect.x = (int)(xOrig * 8);
 	srcRect.y = (int)(yOrig * 8);
 	srcRect.w = 320;
@@ -344,19 +397,32 @@ int DrawMap(void *data, int pictureHeroX, int pictureHeroY)
 	dstRect.x = dstRect.y = 0;
 	dstRect.w = 640;
 	dstRect.h = 480;
+	//deplacements simples
 	if (dat->getHero()->getActualPos() < 4)
 		srcHero.w = 24;
+	//utilisation arc
 	else if (4 <= dat->getHero()->getActualPos() && dat->getHero()->getActualPos() < 8 && dat->getHero()->getActualPos() % 2 == 1)
 		srcHero.w = 32;
+	//utilisation lance pierres
+	else if (8 <= dat->getHero()->getActualPos() && dat->getHero()->getActualPos() < 12 && dat->getHero()->getActualPos() % 2 == 1)
+		srcHero.w = 37;
 	else
 		srcHero.w = 24;
-	srcHero.h = 32;
+	srcHero.h = 37;
+	if (dat->getHero())
 	srcHero.x = pictureHeroX * srcHero.w;
 	srcHero.y = pictureHeroY * srcHero.h;
 	srcArrow.x = dat->arrow.getActualImage() * 16;
 	srcArrow.y = dat->arrow.getActualPos() * 16;
 	srcArrow.w = srcArrow.h = 16;
-	
+	srcBomb.x = dat->bomb.actualImage * 15;
+	srcBomb.y = 0;
+	srcBomb.w = 15;
+	srcBomb.h = 21;
+	srcExplo.x = dat->explosion.actualImage * 47;
+	srcExplo.y = 0;
+	srcExplo.w = 47;
+	srcExplo.h = 51;
 	//partie gauche map
 	if (dat->getHero()->getPosX() <= 20)
 		dstHero.x = (int)(((dat->getHero()->getPosX()) * 16) - 24);
@@ -370,29 +436,59 @@ int DrawMap(void *data, int pictureHeroX, int pictureHeroY)
 		dstHero.x -= 24;
 	//partie haute map
 	if (dat->getHero()->getPosY() <= 15)
-		dstHero.y = (int)(((dat->getHero()->getPosY()) * 16) - 64);
+		dstHero.y = (int)(((dat->getHero()->getPosY()) * 16) - 72);
 	//partie basse map
 	else if (dat->getHero()->getPosY() > dat->getMap()->getHeight() - 15)
-		dstHero.y = (int)(((30 - (((dat->getMap()->getHeight()) - (dat->getHero()->getPosY())))) * 16) - 64);
+		dstHero.y = (int)(((30 - (((dat->getMap()->getHeight()) - (dat->getHero()->getPosY())))) * 16) - 72);
 	//milieu map
 	else
-		dstHero.y = 240 - 64;
-	if (dat->useObject == true && dat->getHero()->getActualPos() % 4 == 0)
-		dstHero.y += 16;
+		dstHero.y = 240 - 72;
+	//utilisation arc vers le bas
+	if (dat->useObject == true && dat->getHero()->getActualPos() == 4)
+		dstHero.y += 18;
+	//utilisation lance pierres vers le bas
+	if (dat->useObject == true && dat->getHero()->getActualPos() == 8)
+		dstHero.y += 24;
 	dstHero.w = srcHero.w * 2;
-	dstHero.h = 64;
-
+	dstHero.h = 74;
+	dstSeed.w = dstSeed.h = 32;
+	//gestion position graine
+	if ((dat->seed.posX >= dat->getHero()->getPosX() - 20) && dat->seed.posX <= dat->getHero()->getPosX() + 20)
+		dstSeed.x = dstHero.x - (int)((dat->getHero()->getPosX() - dat->seed.posX) * 16);
+	if ((dat->seed.posY >= dat->getHero()->getPosY() - 20) && dat->seed.posY <= dat->getHero()->getPosY() + 20)
+		dstSeed.y = dstHero.y - (int)((dat->getHero()->getPosY() - dat->seed.posY) * 16);
 	//gestion position flèche
 	if ((dat->arrow.getPosX() >= dat->getHero()->getPosX() - 20) && dat->arrow.getPosX() <= dat->getHero()->getPosX() + 20)
 		dstArrow.x = dstHero.x - (int)((dat->getHero()->getPosX() - dat->arrow.getPosX()) * 16);
-	if ((dat->arrow.getPosY() >= dat->getHero()->getPosY() - 20) && dat->arrow.getPosY() <= dat->getHero()->getPosY() + 20)
+	if ((dat->arrow.getPosY() >= dat->getHero()->getPosY() - 20) && dat->arrow.getPosY() <= dat->getHero()->getPosY() + 15)
 		dstArrow.y = dstHero.y - (int)((dat->getHero()->getPosY() - dat->arrow.getPosY()) * 16);
+	//gestion position bombe;
+	if ((dat->bomb.posX >= dat->getHero()->getPosX() - 20) && dat->bomb.posX <= dat->getHero()->getPosX() + 20)
+		dstBomb.x = dstHero.x - (int)((dat->getHero()->getPosX() - dat->bomb.posX) * 16) + 12;
+	if ((dat->bomb.posY >= dat->getHero()->getPosY() - 15) && dat->bomb.posY <= dat->getHero()->getPosY() + 15)
+		dstBomb.y = dstHero.y - (int)((dat->getHero()->getPosY() - dat->bomb.posY) * 16) + 32;
+	dstBomb.w = 30;
+	dstBomb.h = 42;
+	//gestion position explosion
+	if ((dat->bomb.posX >= dat->getHero()->getPosX() - 20) && dat->bomb.posX <= dat->getHero()->getPosX() + 20)
+		dstExplo.x = dstBomb.x - 32;
+	if ((dat->bomb.posY >= dat->getHero()->getPosY() - 15) && dat->bomb.posY <= dat->getHero()->getPosY() + 15)
+		dstExplo.y = dstBomb.y - 32;
+	dstExplo.w = 94;
+	dstExplo.h = 102;
+
 	dstArrow.w = 32;
 	dstArrow.h = 32;
 	SDL_RenderCopy(dat->getRenderer(), dat->getTextureFloor(), &srcRect, &dstRect);
 	SDL_RenderCopy(dat->getRenderer(), dat->getTextureLink(), &srcHero, &dstHero);
 	if (dat->arrow.getActualImage() >= 0)
 		SDL_RenderCopy(dat->getRenderer(), dat->getTextureArrow(), &srcArrow, &dstArrow);
+	if (dat->seed.seedExists)
+		SDL_RenderCopy(dat->getRenderer(), dat->getTextureSeed(), &srcSeed, &dstSeed);
+	if (dat->bomb.bombExists)
+		SDL_RenderCopy(dat->getRenderer(), dat->getTextureBomb(), &srcBomb, &dstBomb);
+	if (dat->explosion.bombExists)
+		SDL_RenderCopy(dat->getRenderer(), dat->getTextureExplosion(), &srcExplo, &dstExplo);
 	SDL_RenderCopy(dat->getRenderer(), dat->getTextureCeiling(), &srcRect, &dstRect);
 	dat->setDrawAll(false);
 	time = SDL_GetTicks() - time;

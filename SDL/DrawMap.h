@@ -5,6 +5,23 @@
 #include <SDL2/SDL.h>
 #include "Hero.h"
 
+class seedToDraw
+{
+public:
+	float posX, posY;
+	bool seedExists;
+	seedToDraw();
+};
+
+class bombToDraw
+{
+public:
+	int actualImage;
+	float posX, posY;
+	bool bombExists;
+	bombToDraw();
+};
+
 class arrowToDraw
 {
 private:
@@ -38,6 +55,9 @@ private:
 	SDL_Texture *pTextureFloor;
 	SDL_Texture *pTextureCeiling;
 	SDL_Texture *pTextureArrow;
+	SDL_Texture *pTextureBomb;
+	SDL_Texture *pTextureSeed;
+	SDL_Texture *pTextureExplosion;
 	SDL_Texture *pTextureLink;
 	SDL_Surface *pMapFloor;
 	SDL_Surface *pMapCeiling;
@@ -66,6 +86,12 @@ public:
 	void setTextureCeiling(SDL_Texture *);
 	SDL_Texture *getTextureArrow();
 	void setTextureArrow(SDL_Texture *);
+	SDL_Texture *getTextureBomb();
+	void setTextureBomb(SDL_Texture *);
+	SDL_Texture *getTextureExplosion();
+	void setTextureExplosion(SDL_Texture *);
+	SDL_Texture *getTextureSeed();
+	void setTextureSeed(SDL_Texture *);
 	SDL_Texture *getTextureLink();
 	void setTextureLink(SDL_Texture *);
 	SDL_Surface *getMapFloor();
@@ -73,8 +99,12 @@ public:
 	SDL_Surface *getMapCeiling();
 	void setMapCeiling(SDL_Surface *);
 	arrowToDraw arrow;
+	bombToDraw bomb;
+	bombToDraw explosion;
+	seedToDraw seed;
 	bool useObject;
 	bool needDraw;
+	int doTransition;
 	//DataToDraw *operator=(DataToDraw *);
 };
 

@@ -36,7 +36,7 @@ bool execEvent(SDL_Event event, void *data)
 			}
 			else if (dat->getMap()->getMapWest())
 			{
-				dat = transit(dat, &(maps[dat->getMap()->getMapWest() - 1]), -2);
+				dat->doTransition = -2;
 			}
 			if (dat->getHero()->getCount() > 2)
 			{
@@ -66,7 +66,7 @@ bool execEvent(SDL_Event event, void *data)
 			}
 			else if (dat->getMap()->getMapEast() != NULL)
 			{
-				dat = transit(dat, &(maps[dat->getMap()->getMapEast() - 1]), 2);
+				dat->doTransition = 2;
 			}
 			if (dat->getHero()->getPosYScreen() == actualPosScreenY && dat->getHero()->getPosXScreen() == actualPosScreenX)
 				dat->setDrawAll(true);
@@ -98,7 +98,7 @@ bool execEvent(SDL_Event event, void *data)
 			}
 			else if (dat->getMap()->getMapNorth() != NULL)
 			{
-				dat = transit(dat, &(maps[dat->getMap()->getMapNorth() - 1]), -1);
+				dat->doTransition = -1;
 			}
 			if (dat->getHero()->getPosYScreen() == actualPosScreenY && dat->getHero()->getPosXScreen() == actualPosScreenX)
 				dat->setDrawAll(true);
@@ -128,7 +128,7 @@ bool execEvent(SDL_Event event, void *data)
 			}
 			else if (dat->getMap()->getMapSouth() != NULL)
 			{
-				dat = transit(dat, &(maps[dat->getMap()->getMapSouth() - 1]), 1);
+				dat->doTransition = 1;
 			}
 			if (dat->getHero()->getPosYScreen() == actualPosScreenY && dat->getHero()->getPosXScreen() == actualPosScreenX)
 				dat->setDrawAll(true);
