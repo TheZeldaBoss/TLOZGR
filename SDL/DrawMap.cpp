@@ -40,6 +40,14 @@ arrowToDraw::arrowToDraw()
 	drawIt = false;
 }
 
+hookToDraw::hookToDraw()
+{
+	this->posX = -1;
+	this->posY = -1;
+	this->actualImage = -1;
+	this->hookshotExists = false;
+}
+
 int arrowToDraw::getActualPos()
 {
 	return actualPos;
@@ -261,6 +269,16 @@ void DataToDraw::setTextureSeed(SDL_Texture *texture)
 	pTextureSeed = texture;
 }
 
+SDL_Texture *DataToDraw::getTextureHookshot()
+{
+	return pTextureHookshot;
+}
+void DataToDraw::setTextureHookshot(SDL_Texture *texture)
+{
+	this->pTextureHookshot = texture;
+}
+
+
 SDL_Window *initWindow()
 {
 	SDL_Window *window(0);
@@ -307,6 +325,7 @@ void init(DataToDraw *dat)
 	dat->setTextureBomb(SDL_CreateTextureFromSurface(dat->getRenderer(), IMG_Load("./data/images/equipement/bombs.png")));
 	dat->setTextureExplosion(SDL_CreateTextureFromSurface(dat->getRenderer(), IMG_Load("./data/images/equipement/explosion.png")));
 	dat->setTextureSeed(SDL_CreateTextureFromSurface(dat->getRenderer(), IMG_Load("./data/images/equipement/seed.png")));
+	dat->setTextureHookshot(SDL_CreateTextureFromSurface(dat->getRenderer(), IMG_Load("./data/images/equipement/hookshot.png")));
 	dat->setMapCeiling(SDL_CreateRGBSurface(0, dat->getMap()->getWidth() * 8, dat->getMap()->getHeight() * 8, 32, rmask, gmask, bmask, amask));
 	dat->setMapFloor(SDL_CreateRGBSurface(0, dat->getMap()->getWidth() * 8, dat->getMap()->getHeight() * 8, 32, rmask, gmask, bmask, amask));
 	for (int i = 0; i < dat->getMap()->getWidth(); i++)
@@ -388,6 +407,7 @@ int DrawMap(void *data, int pictureHeroX, int pictureHeroY)
 	SDL_Rect srcSeed, dstSeed;
 	SDL_Rect srcBomb, dstBomb;
 	SDL_Rect srcExplo, dstExplo;
+	SDL_Rect srcHook, srcChain, dstHook, dstChain1, dstChain2, dstChain3;
 	srcSeed.x = srcSeed.y = 0;
 	srcSeed.w = srcSeed.h = 16;
 	srcRect.x = (int)(xOrig * 8);
@@ -423,6 +443,12 @@ int DrawMap(void *data, int pictureHeroX, int pictureHeroY)
 	srcExplo.y = 0;
 	srcExplo.w = 47;
 	srcExplo.h = 51;
+	srcHook.w = 16;
+	srcHook.h = 16;
+	srcHook.x = dat->hookshot.actualImage * srcHook.w;
+	srcHook.y = (dat->getHero()->getActualPos() % 4) * srcHook.h;
+	srcChain.x = srcChain.y = 0;
+	srcChain.w = srcChain.h = 16;
 	//partie gauche map
 	if (dat->getHero()->getPosX() <= 20)
 		dstHero.x = (int)(((dat->getHero()->getPosX()) * 16) - 24);
@@ -449,6 +475,9 @@ int DrawMap(void *data, int pictureHeroX, int pictureHeroY)
 	//utilisation lance pierres vers le bas
 	if (dat->useObject == true && dat->getHero()->getActualPos() == 8)
 		dstHero.y += 24;
+	//utilisation grappin vers la gauche
+	if (dat->useObject == true && dat->getHero()->getActualPos() == 13)
+		dstHero.x += 24;
 	dstHero.w = srcHero.w * 2;
 	dstHero.h = 74;
 	dstSeed.w = dstSeed.h = 32;
@@ -462,6 +491,8 @@ int DrawMap(void *data, int pictureHeroX, int pictureHeroY)
 		dstArrow.x = dstHero.x - (int)((dat->getHero()->getPosX() - dat->arrow.getPosX()) * 16);
 	if ((dat->arrow.getPosY() >= dat->getHero()->getPosY() - 20) && dat->arrow.getPosY() <= dat->getHero()->getPosY() + 15)
 		dstArrow.y = dstHero.y - (int)((dat->getHero()->getPosY() - dat->arrow.getPosY()) * 16);
+	dstArrow.w = 32;
+	dstArrow.h = 32;
 	//gestion position bombe;
 	if ((dat->bomb.posX >= dat->getHero()->getPosX() - 20) && dat->bomb.posX <= dat->getHero()->getPosX() + 20)
 		dstBomb.x = dstHero.x - (int)((dat->getHero()->getPosX() - dat->bomb.posX) * 16) + 12;
@@ -476,9 +507,56 @@ int DrawMap(void *data, int pictureHeroX, int pictureHeroY)
 		dstExplo.y = dstBomb.y - 32;
 	dstExplo.w = 94;
 	dstExplo.h = 102;
+	//gestion position grappin
+	dstHook.w = 32;
+	dstHook.h = 32;
+	dstChain1.w = 16;
+	dstChain1.h = 16;
+	dstChain2.w = 16;
+	dstChain2.h = 16;
+	dstChain3.w = 16;
+	dstChain3.h = 16;
+	if (dat->getHero()->getActualPos() % 4 == 0)//bas
+	{
+		int originHook = dstHero.y + 66;
+		dstHook.x = dstHero.x + 12;
+		dstHook.y = dstHero.y + (int)((dat->hookshot.posY - (dat->getHero()->getPosY() - 3.5)) * 16);
+		dstChain1.x = dstChain2.x = dstChain3.x = dstHook.x + 8;
+		dstChain1.y = dstHook.y - ((dstHook.y - originHook) / 4);
+		dstChain2.y = dstHook.y - ((dstHook.y - originHook) / 2);
+		dstChain3.y = dstHook.y - (3 * ((dstHook.y - originHook) / 4));
+	}
+	if (dat->getHero()->getActualPos() % 4 == 1)//gauche
+	{
+		int originHook = dstHero.x +4;
+		dstHook.y = dstHero.y + 40;
+		dstHook.x = dstHero.x - (int)((dat->getHero()->getPosX() - dat->hookshot.posX) * 16) - 48;
+		dstChain1.y = dstChain2.y = dstChain3.y = dstHook.y + 8;
+		dstChain1.x = originHook - ((originHook - dstHook.x) / 4);
+		dstChain2.x = originHook - ((originHook - dstHook.x) / 2);
+		dstChain3.x = originHook - (3 * ((originHook - dstHook.x) / 4));
+	}
+	if (dat->getHero()->getActualPos() % 4 == 2)//haut
+	{
+		int originHook = dstHero.y ;
+		dstHook.x = dstHero.x + 12;
+		dstHook.y = dstHero.y - (int)(((dat->getHero()->getPosY()) - dat->hookshot.posY) * 16);
+		dstChain1.x = dstChain2.x = dstChain3.x = dstHook.x + 8;
+		dstChain1.y = dstHook.y - ((dstHook.y - originHook) / 4);
+		dstChain2.y = dstHook.y - ((dstHook.y - originHook) / 2);
+		dstChain3.y = dstHook.y - (3 * ((dstHook.y - originHook) / 4));
+	}
+	if (dat->getHero()->getActualPos() % 4 == 3)//droite
+	{
+		int originHook = dstHero.x + 20;
+		dstHook.y = dstHero.y + 40;
+		dstHook.x = dstHero.x + (int)((dat->hookshot.posX - dat->getHero()->getPosX()) * 16) +32;
+		dstChain1.y = dstChain2.y = dstChain3.y = dstHook.y + 8;
+		dstChain1.x = dstHook.x - ((dstHook.x - originHook) / 4);
+		dstChain2.x = dstHook.x - ((dstHook.x - originHook) / 2);
+		dstChain3.x = dstHook.x - (3 * ((dstHook.x - originHook) / 4));
+	}
 
-	dstArrow.w = 32;
-	dstArrow.h = 32;
 	SDL_RenderCopy(dat->getRenderer(), dat->getTextureFloor(), &srcRect, &dstRect);
 	SDL_RenderCopy(dat->getRenderer(), dat->getTextureLink(), &srcHero, &dstHero);
 	if (dat->arrow.getActualImage() >= 0)
@@ -489,6 +567,13 @@ int DrawMap(void *data, int pictureHeroX, int pictureHeroY)
 		SDL_RenderCopy(dat->getRenderer(), dat->getTextureBomb(), &srcBomb, &dstBomb);
 	if (dat->explosion.bombExists)
 		SDL_RenderCopy(dat->getRenderer(), dat->getTextureExplosion(), &srcExplo, &dstExplo);
+	if (dat->hookshot.hookshotExists)
+	{
+		SDL_RenderCopy(dat->getRenderer(), dat->getTextureHookshot(), &srcHook, &dstHook);
+		SDL_RenderCopy(dat->getRenderer(), dat->getTextureHookshot(), &srcChain, &dstChain1);
+		SDL_RenderCopy(dat->getRenderer(), dat->getTextureHookshot(), &srcChain, &dstChain2);
+		SDL_RenderCopy(dat->getRenderer(), dat->getTextureHookshot(), &srcChain, &dstChain3);
+	}
 	SDL_RenderCopy(dat->getRenderer(), dat->getTextureCeiling(), &srcRect, &dstRect);
 	dat->setDrawAll(false);
 	time = SDL_GetTicks() - time;

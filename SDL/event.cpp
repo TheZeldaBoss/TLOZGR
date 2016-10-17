@@ -166,6 +166,24 @@ bool execEvent(SDL_Event event, void *data)
 				keystate = SDL_GetKeyboardState(NULL);
 			}
 		}
+		else if (keystate[SDL_SCANCODE_5])
+		{
+			dat->getHero()->setObj1(dat->getHero()->getObj1() - 1);
+			while (keystate[SDL_SCANCODE_5])
+			{
+				SDL_PollEvent(&event);
+				keystate = SDL_GetKeyboardState(NULL);
+			}
+		}
+		else if (keystate[SDL_SCANCODE_6])
+		{
+			dat->getHero()->setObj1(dat->getHero()->getObj1() + 1);
+			while (keystate[SDL_SCANCODE_6])
+			{
+				SDL_PollEvent(&event);
+				keystate = SDL_GetKeyboardState(NULL);
+			}
+		}
 		if (!dat->getHero()->getActualImage() == 0)
 		if (!dat->useObject && !(keystate[SDL_SCANCODE_LEFT]) && !(keystate[SDL_SCANCODE_RIGHT]) && !(keystate[SDL_SCANCODE_UP]) && !(keystate[SDL_SCANCODE_DOWN]))
 		{

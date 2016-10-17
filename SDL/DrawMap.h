@@ -5,6 +5,15 @@
 #include <SDL2/SDL.h>
 #include "Hero.h"
 
+class hookToDraw
+{
+public:
+	int actualImage;
+	float posX, posY;
+	bool hookshotExists;
+	hookToDraw();
+};
+
 class seedToDraw
 {
 public:
@@ -59,6 +68,7 @@ private:
 	SDL_Texture *pTextureSeed;
 	SDL_Texture *pTextureExplosion;
 	SDL_Texture *pTextureLink;
+	SDL_Texture *pTextureHookshot;
 	SDL_Surface *pMapFloor;
 	SDL_Surface *pMapCeiling;
 	
@@ -94,6 +104,8 @@ public:
 	void setTextureSeed(SDL_Texture *);
 	SDL_Texture *getTextureLink();
 	void setTextureLink(SDL_Texture *);
+	SDL_Texture *getTextureHookshot();
+	void setTextureHookshot(SDL_Texture *);
 	SDL_Surface *getMapFloor();
 	void setMapFloor(SDL_Surface *);
 	SDL_Surface *getMapCeiling();
@@ -102,6 +114,7 @@ public:
 	bombToDraw bomb;
 	bombToDraw explosion;
 	seedToDraw seed;
+	hookToDraw hookshot;
 	bool useObject;
 	bool needDraw;
 	int doTransition;

@@ -286,6 +286,149 @@ int use_slingshot(void *data)
 int use_hookshot(void *data)
 {
 	DataToDraw *dat = (DataToDraw *)data;
+	int i = 0;
+	if (dejala)
+		return (0);
+
+	int curPos = 12 + dat->getHero()->getActualPos();
+	dejala = true;
+	dat->useObject = true;
+	unsigned int anim = 0;
+	while (anim < 4)
+	{
+		dat->getHero()->setActualPos(curPos);
+		dat->getHero()->setActualImage(anim);
+		dat->needDraw = true;
+		Sleep(80);
+		anim++;
+	}
+	dat->hookshot.posX = (float)(dat->getHero()->getPosX() + .5);
+	dat->hookshot.posY = (float)(dat->getHero()->getPosY() + .5);
+	dat->hookshot.hookshotExists = true;
+	if (dat->getHero()->getActualPos() % 4 == 0)//bas
+	{
+		while (dat->hookshot.posY < (float)(dat->getMap()->getHeight() - 1) && dat->getMap()->getLayerWalls()[(int)dat->hookshot.posY][(int)dat->hookshot.posX] == 0 && dat->hookshot.posY < dat->getHero()->getPosY() + 30)
+		{
+
+			dat->needDraw = true;
+			dat->hookshot.posY += .125;
+			if (i < 32)
+				dat->hookshot.actualImage = 1;
+			else
+				dat->hookshot.actualImage = 2;
+			i++;
+			if (i == 64)
+				i = 0;
+			Sleep(2);
+		}
+		while (dat->hookshot.posY >(float)(dat->getHero()->getPosY()))
+		{
+			dat->needDraw = true;
+			dat->hookshot.posY -= .125;
+			if (i < 32)
+				dat->hookshot.actualImage = 1;
+			else
+				dat->hookshot.actualImage = 2;
+			i++;
+			if (i == 64)
+				i = 0;
+			Sleep(2);
+		}
+	}
+	if (dat->getHero()->getActualPos() % 4 == 1)//gauche
+	{
+		while (dat->hookshot.posX > 0 && dat->getMap()->getLayerWalls()[(int)(dat->hookshot.posY)][(int)(dat->hookshot.posX)] == 0 && dat->hookshot.posX > dat->getHero()->getPosX() - 30)
+		{
+			dat->needDraw = true;
+			dat->hookshot.posX -= .125;
+			if (i < 32)
+				dat->hookshot.actualImage = 1;
+			else
+				dat->hookshot.actualImage = 2;
+			i++;
+			if (i == 64)
+				i = 0;
+			Sleep(2);
+		}
+		while (dat->hookshot.posX <(float)(dat->getHero()->getPosX()))
+		{
+			dat->needDraw = true;
+			dat->hookshot.posX += .125;
+			if (i < 32)
+				dat->hookshot.actualImage = 1;
+			else
+				dat->hookshot.actualImage = 2;
+			i++;
+			if (i == 64)
+				i = 0;
+			Sleep(2);
+		}
+	}
+	if (dat->getHero()->getActualPos() % 4 == 2)//haut
+	{
+		while (dat->hookshot.posY > 0 && dat->getMap()->getLayerWalls()[(int)(dat->hookshot.posY)][(int)(dat->hookshot.posX)] == 0 && dat->hookshot.posY > dat->getHero()->getPosY() - 30)
+		{
+			if (i < 32)
+				dat->hookshot.actualImage = 1;
+			else
+				dat->hookshot.actualImage = 2;
+			i++;
+			if (i == 64)
+				i = 0;
+			dat->needDraw = true;
+			dat->hookshot.posY += .125;
+			Sleep(2);
+		}
+		/*while (dat->hookshot.posY < dat->getHero()->getPosY())
+		{
+				 if (i < 32)
+				dat->hookshot.actualImage = 1;
+			else
+				dat->hookshot.actualImage = 2;
+			i++;
+			if (i == 64)
+				i = 0;
+			dat->needDraw = true;
+			dat->hookshot.posY += .125;
+			Sleep(2);
+		}*/
+	}
+	if (dat->getHero()->getActualPos() % 4 == 3)//droite
+	{
+		while (dat->hookshot.posX < dat->getMap()->getWidth() && dat->getMap()->getLayerWalls()[(int)(dat->hookshot.posY)][(int)(dat->hookshot.posX)] == 0 && dat->hookshot.posX < dat->getHero()->getPosX() + 30)
+		{
+			if (i < 32)
+				dat->hookshot.actualImage = 1;
+			else
+				dat->hookshot.actualImage = 2;
+			i++;
+			if (i == 64)
+				i = 0;
+			dat->needDraw = true;
+			dat->hookshot.posX += .125;
+			Sleep(2);
+		}
+		while (dat->hookshot.posX > dat->getHero()->getPosX())
+		{
+			if (i < 32)
+				dat->hookshot.actualImage = 1;
+			else
+				dat->hookshot.actualImage = 2;
+			i++;
+			if (i == 64)
+				i = 0;
+			dat->needDraw = true;
+			dat->hookshot.posX -= .125;
+			Sleep(2);
+		}
+	}
+	dejala = false;
+	dat->getHero()->setActualImage(0);
+	dat->getHero()->setActualPos(dat->getHero()->getActualPos() - 12);
+	
+	dat->hookshot.hookshotExists = false;
+	dat->useObject = false;
+	dat->needDraw = true;
 	return (0);
 }
 
