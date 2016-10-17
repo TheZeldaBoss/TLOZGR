@@ -542,9 +542,9 @@ int DrawMap(void *data, int pictureHeroX, int pictureHeroY)
 		dstHook.x = dstHero.x + 12;
 		dstHook.y = dstHero.y - (int)(((dat->getHero()->getPosY()) - dat->hookshot.posY) * 16);
 		dstChain1.x = dstChain2.x = dstChain3.x = dstHook.x + 8;
-		dstChain1.y = dstHook.y - ((dstHook.y - originHook) / 4);
-		dstChain2.y = dstHook.y - ((dstHook.y - originHook) / 2);
-		dstChain3.y = dstHook.y - (3 * ((dstHook.y - originHook) / 4));
+		dstChain1.y = dstHook.y + ((originHook - dstHook.y) / 4) + 16;
+		dstChain2.y = dstHook.y + ((originHook - dstHook.y) / 2) + 16;
+		dstChain3.y = dstHook.y + (3 * ((originHook - dstHook.y) / 4)) + 16;
 	}
 	if (dat->getHero()->getActualPos() % 4 == 3)//droite
 	{

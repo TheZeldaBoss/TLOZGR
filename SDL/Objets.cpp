@@ -376,10 +376,10 @@ int use_hookshot(void *data)
 			if (i == 64)
 				i = 0;
 			dat->needDraw = true;
-			dat->hookshot.posY += .125;
+			dat->hookshot.posY -= .125;
 			Sleep(2);
 		}
-		/*while (dat->hookshot.posY < dat->getHero()->getPosY())
+		while (dat->hookshot.posY < dat->getHero()->getPosY())
 		{
 				 if (i < 32)
 				dat->hookshot.actualImage = 1;
@@ -391,7 +391,7 @@ int use_hookshot(void *data)
 			dat->needDraw = true;
 			dat->hookshot.posY += .125;
 			Sleep(2);
-		}*/
+		}
 	}
 	if (dat->getHero()->getActualPos() % 4 == 3)//droite
 	{
