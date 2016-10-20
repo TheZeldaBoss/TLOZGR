@@ -435,6 +435,155 @@ int use_hookshot(void *data)
 int use_lantern(void *data)
 {
 	DataToDraw *dat = (DataToDraw *)data;
+	if (dejala)
+		return (0);
+	dat->fireSeed.fireSeedExists = true;
+	int curpos = dat->getHero()->getActualPos() + 16;
+	dejala = true;
+	dat->useObject = true;
+	dat->getHero()->setActualPos(curpos);
+	dat->getHero()->setActualImage(0);
+	//animation lancer graime : 8 frames
+	if (dat->getHero()->getActualPos() % 4 == 0)//bas
+	{
+		dat->fireSeed.posX = (float)(dat->getHero()->getPosX() - .125);
+		dat->fireSeed.posY = (float)(dat->getHero()->getPosY() + 1);
+		Sleep(20);
+		dat->needDraw = true;
+		dat->fireSeed.posY = (float)(dat->getHero()->getPosY() + 1.25);
+		Sleep(20);
+		dat->needDraw = true;
+		dat->fireSeed.posY = (float)(dat->getHero()->getPosY() + 1.5);
+		Sleep(20);
+		dat->needDraw = true;
+		dat->fireSeed.posY = (float)(dat->getHero()->getPosY() + 1.75);
+		Sleep(20);
+		dat->needDraw = true;
+		dat->fireSeed.posY = (float)(dat->getHero()->getPosY() + 2);
+		Sleep(20);
+		dat->needDraw = true;
+		dat->fireSeed.posY = (float)(dat->getHero()->getPosY() + 2.25);
+		Sleep(20);
+		dat->needDraw = true;
+		dat->fireSeed.posY = (float)(dat->getHero()->getPosY() + 2.5);
+		Sleep(20);
+		dat->needDraw = true;
+		dat->fireSeed.posY = (float)(dat->getHero()->getPosY() + 2.75);
+		Sleep(20);
+		dat->needDraw = true;
+	}
+	else if (dat->getHero()->getActualPos() % 4 == 1)//gauche
+	{
+		dat->fireSeed.posX = (float)(dat->getHero()->getPosX() - .625);
+		dat->fireSeed.posY = (float)(dat->getHero()->getPosY() + .375);
+		Sleep(20);
+		dat->needDraw = true;
+		dat->fireSeed.posX = (float)(dat->getHero()->getPosX() - .750);
+		dat->fireSeed.posY = (float)(dat->getHero()->getPosY() + .375);
+		Sleep(20);
+		dat->needDraw = true;
+		dat->fireSeed.posX = (float)(dat->getHero()->getPosX() - .875);
+		dat->fireSeed.posY = (float)(dat->getHero()->getPosY() + .5);
+		Sleep(20);
+		dat->needDraw = true;
+		dat->fireSeed.posX = (float)(dat->getHero()->getPosX() - 1);
+		dat->fireSeed.posY = (float)(dat->getHero()->getPosY() + .5);
+		Sleep(20);
+		dat->needDraw = true;
+		dat->fireSeed.posX = (float)(dat->getHero()->getPosX() - 1.125);
+		dat->fireSeed.posY = (float)(dat->getHero()->getPosY() + .625);
+		Sleep(20);
+		dat->needDraw = true;
+		dat->fireSeed.posX = (float)(dat->getHero()->getPosX() - 1.25);
+		dat->fireSeed.posY = (float)(dat->getHero()->getPosY() + .625);
+		Sleep(20);
+		dat->needDraw = true;
+		dat->fireSeed.posX = (float)(dat->getHero()->getPosX() - 1.375);
+		dat->fireSeed.posY = (float)(dat->getHero()->getPosY() + .75);
+		Sleep(20);
+		dat->needDraw = true;
+		dat->fireSeed.posX = (float)(dat->getHero()->getPosX() - 1.5);
+		dat->fireSeed.posY = (float)(dat->getHero()->getPosY() + .75);
+		Sleep(20);
+		dat->needDraw = true;
+	}
+	else if (dat->getHero()->getActualPos() % 4 == 2)//haut
+	{
+		dat->fireSeed.posX = (float)(dat->getHero()->getPosX() - .125);
+		dat->fireSeed.posY = (float)(dat->getHero()->getPosY() - .25);
+		Sleep(20);
+		dat->needDraw = true;
+		dat->fireSeed.posY = (float)(dat->getHero()->getPosY() - .5);
+		Sleep(20);
+		dat->needDraw = true;
+		dat->fireSeed.posY = (float)(dat->getHero()->getPosY() - .75);
+		Sleep(20);
+		dat->needDraw = true;
+		dat->fireSeed.posY = (float)(dat->getHero()->getPosY() - 1);
+		Sleep(20);
+		dat->needDraw = true;
+		dat->fireSeed.posY = (float)(dat->getHero()->getPosY() - 1.25);
+		Sleep(20);
+		dat->needDraw = true;
+		dat->fireSeed.posY = (float)(dat->getHero()->getPosY() - 1.5);
+		Sleep(20);
+		dat->needDraw = true;
+		dat->fireSeed.posY = (float)(dat->getHero()->getPosY() - 1.75);
+		Sleep(20);
+		dat->needDraw = true;
+		dat->fireSeed.posY = (float)(dat->getHero()->getPosY() - 2);
+		Sleep(20);
+	}
+	else//droite
+	{
+		dat->fireSeed.posX = (float)(dat->getHero()->getPosX() + 2.125);
+		dat->fireSeed.posY = (float)(dat->getHero()->getPosY() + .375);
+		dat->needDraw = true;
+		Sleep(20);
+		dat->fireSeed.posX = (float)(dat->getHero()->getPosX() + 2.25);
+		dat->fireSeed.posY = (float)(dat->getHero()->getPosY() + .375);
+		dat->needDraw = true;
+		Sleep(20);
+		dat->fireSeed.posX = (float)(dat->getHero()->getPosX() + 2.375);
+		dat->fireSeed.posY = (float)(dat->getHero()->getPosY() + .5);
+		dat->needDraw = true;
+		Sleep(20);
+		dat->fireSeed.posX = (float)(dat->getHero()->getPosX() + 2.5);
+		dat->fireSeed.posY = (float)(dat->getHero()->getPosY() + .5);
+		dat->needDraw = true;
+		Sleep(20);
+		dat->fireSeed.posX = (float)(dat->getHero()->getPosX() + 2.625);
+		dat->fireSeed.posY = (float)(dat->getHero()->getPosY() + .625);
+		dat->needDraw = true;
+		Sleep(20);
+		dat->fireSeed.posX = (float)(dat->getHero()->getPosX() + 2.750);
+		dat->fireSeed.posY = (float)(dat->getHero()->getPosY() + .625);
+		dat->needDraw = true;
+		Sleep(20);
+		dat->fireSeed.posX = (float)(dat->getHero()->getPosX() + 2.875);
+		dat->fireSeed.posY = (float)(dat->getHero()->getPosY() + .750);
+		dat->needDraw = true;
+		Sleep(20);
+		dat->fireSeed.posX = (float)(dat->getHero()->getPosX() + 3);
+		dat->fireSeed.posY = (float)(dat->getHero()->getPosY() + .750);
+		dat->needDraw = true;
+		Sleep(20);
+	}
+	for (int i = 0; i < 5; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			dat->fireSeed.actualImage = j + 1;
+			dat->needDraw = true;
+			Sleep(20);
+		}
+	}
+	dat->fireSeed.actualImage = 0;
+	dat->fireSeed.fireSeedExists = false;
+	dat->getHero()->setActualPos(curpos - 16);
+	dat->needDraw = true;
+	dat->useObject = false;
+	dejala = false;
 	return (0);
 }
 

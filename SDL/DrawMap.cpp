@@ -88,6 +88,14 @@ void  arrowToDraw::setActualImage(int newImage)
 	actualImage = newImage;
 }
 
+fireSeedToDraw::fireSeedToDraw()
+{
+	actualImage = 0;
+	posX = 0;
+	posY = 0;
+	fireSeedExists = false;
+}
+
 DataToDraw::DataToDraw()
 {
 	this->actualMap = NULL;
@@ -278,6 +286,15 @@ void DataToDraw::setTextureHookshot(SDL_Texture *texture)
 	this->pTextureHookshot = texture;
 }
 
+void DataToDraw::setTextureFireSeed(SDL_Texture *texture)
+{
+	pTextureFireSeed = texture;
+}
+
+SDL_Texture *DataToDraw::getTextureFireSeed()
+{
+	return pTextureFireSeed;
+}
 
 SDL_Window *initWindow()
 {
@@ -326,6 +343,7 @@ void init(DataToDraw *dat)
 	dat->setTextureExplosion(SDL_CreateTextureFromSurface(dat->getRenderer(), IMG_Load("./data/images/equipement/explosion.png")));
 	dat->setTextureSeed(SDL_CreateTextureFromSurface(dat->getRenderer(), IMG_Load("./data/images/equipement/seed.png")));
 	dat->setTextureHookshot(SDL_CreateTextureFromSurface(dat->getRenderer(), IMG_Load("./data/images/equipement/hookshot.png")));
+	dat->setTextureFireSeed(SDL_CreateTextureFromSurface(dat->getRenderer(), IMG_Load("./data/images/equipement/fireSeed.png")));
 	dat->setMapCeiling(SDL_CreateRGBSurface(0, dat->getMap()->getWidth() * 8, dat->getMap()->getHeight() * 8, 32, rmask, gmask, bmask, amask));
 	dat->setMapFloor(SDL_CreateRGBSurface(0, dat->getMap()->getWidth() * 8, dat->getMap()->getHeight() * 8, 32, rmask, gmask, bmask, amask));
 	for (int i = 0; i < dat->getMap()->getWidth(); i++)
@@ -408,6 +426,7 @@ int DrawMap(void *data, int pictureHeroX, int pictureHeroY)
 	SDL_Rect srcBomb, dstBomb;
 	SDL_Rect srcExplo, dstExplo;
 	SDL_Rect srcHook, srcChain, dstHook, dstChain1, dstChain2, dstChain3;
+	SDL_Rect srcFireSeed, dstFireSeed;
 	srcSeed.x = srcSeed.y = 0;
 	srcSeed.w = srcSeed.h = 16;
 	srcRect.x = (int)(xOrig * 8);
@@ -556,8 +575,27 @@ int DrawMap(void *data, int pictureHeroX, int pictureHeroY)
 		dstChain2.x = dstHook.x - ((dstHook.x - originHook) / 2);
 		dstChain3.x = dstHook.x - (3 * ((dstHook.x - originHook) / 4));
 	}
+	//gestion position fireSeed
+	srcFireSeed.x = dat->fireSeed.actualImage * 16;
+	srcFireSeed.y = 0;
+	srcFireSeed.w = 16;
+	srcFireSeed.h = 32;
+	dstFireSeed.w = 32;
+	dstFireSeed.h = 64;
+	if ((dat->fireSeed.posX >= dat->getHero()->getPosX() - 20) && dat->fireSeed.posX <= dat->getHero()->getPosX() + 20)
+		dstFireSeed.x = dstHero.x - (int)((dat->getHero()->getPosX() - dat->fireSeed.posX) * 16) + 12;
+	if ((dat->fireSeed.posY >= dat->getHero()->getPosY() - 15) && dat->fireSeed.posY <= dat->getHero()->getPosY() + 15)
+		dstFireSeed.y = dstHero.y - (int)((dat->getHero()->getPosY() - dat->fireSeed.posY) * 16) + 16;
+	if (dat->fireSeed.fireSeedExists == true && dat->getHero()->getActualPos() % 4 == 1)
+	{
+		dstHero.x += 16;
+	}
 
 	SDL_RenderCopy(dat->getRenderer(), dat->getTextureFloor(), &srcRect, &dstRect);
+	if (dat->fireSeed.fireSeedExists == true)
+	{
+		SDL_RenderCopy(dat->getRenderer(), dat->getTextureFireSeed(), &srcFireSeed, &dstFireSeed);
+	}
 	SDL_RenderCopy(dat->getRenderer(), dat->getTextureLink(), &srcHero, &dstHero);
 	if (dat->arrow.getActualImage() >= 0)
 		SDL_RenderCopy(dat->getRenderer(), dat->getTextureArrow(), &srcArrow, &dstArrow);
@@ -574,6 +612,7 @@ int DrawMap(void *data, int pictureHeroX, int pictureHeroY)
 		SDL_RenderCopy(dat->getRenderer(), dat->getTextureHookshot(), &srcChain, &dstChain2);
 		SDL_RenderCopy(dat->getRenderer(), dat->getTextureHookshot(), &srcChain, &dstChain3);
 	}
+	
 	SDL_RenderCopy(dat->getRenderer(), dat->getTextureCeiling(), &srcRect, &dstRect);
 	dat->setDrawAll(false);
 	time = SDL_GetTicks() - time;

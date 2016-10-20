@@ -52,6 +52,16 @@ public:
 	bool drawIt;
 };
 
+class fireSeedToDraw
+{
+public:
+	int actualImage;
+	float posX;
+	float posY;
+	bool fireSeedExists;
+	fireSeedToDraw();
+};
+
 class DataToDraw
 {
 private:
@@ -69,6 +79,7 @@ private:
 	SDL_Texture *pTextureExplosion;
 	SDL_Texture *pTextureLink;
 	SDL_Texture *pTextureHookshot;
+	SDL_Texture *pTextureFireSeed;
 	SDL_Surface *pMapFloor;
 	SDL_Surface *pMapCeiling;
 	
@@ -107,6 +118,8 @@ public:
 	SDL_Texture *getTextureHookshot();
 	void setTextureHookshot(SDL_Texture *);
 	SDL_Surface *getMapFloor();
+	SDL_Texture *getTextureFireSeed(); 
+	void setTextureFireSeed(SDL_Texture *);
 	void setMapFloor(SDL_Surface *);
 	SDL_Surface *getMapCeiling();
 	void setMapCeiling(SDL_Surface *);
@@ -115,6 +128,7 @@ public:
 	bombToDraw explosion;
 	seedToDraw seed;
 	hookToDraw hookshot;
+	fireSeedToDraw fireSeed;
 	bool useObject;
 	bool needDraw;
 	int doTransition;
