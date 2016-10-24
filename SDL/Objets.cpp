@@ -637,12 +637,6 @@ int use_lightBow(void *data)
 	return (0);
 }
 
-int use_boots(void *data)
-{
-	DataToDraw *dat = (DataToDraw *)data;
-	return (0);
-}
-
 int use_superSlingshot(void *data)
 {
 	DataToDraw *dat = (DataToDraw *)data;
@@ -865,9 +859,6 @@ void use_objet(int objet, void *data)
 		thread = SDL_CreateThread(use_lightBow, "lightBow", data);
 		break;
 	case 9:
-		thread = SDL_CreateThread(use_boots, "boots", data);
-		break;
-	case 10:
 		thread = SDL_CreateThread(use_superSlingshot, "slingshot", data);
 		break;
 	case 11:

@@ -5,7 +5,7 @@
 #include <SDL2/SDL_image.h>
 #include <vector>
 
-enum valeurObjetsEquipables { arc = 1, bombes, lancePierres, grappin, lanterne, boomerang, marteau, arcLumiere, bottes, superLancePierres, flacon1, flacon2, ocarina };
+enum valeurObjetsEquipables { arc = 1, bombes, lancePierres, grappin, lanterne, boomerang, marteau, arcLumiere, superLancePierres, flacon1, flacon2, ocarina };
 enum valeurObjetsNonEquipable { palmes = 1, gants1, gants2,  medaillonForce, medaillonSagesse, medaillonCourage, triforceForce, triforceSagesse, triforceCourage};
 class objets
 {

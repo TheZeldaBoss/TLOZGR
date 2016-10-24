@@ -5,6 +5,17 @@
 #include <SDL2/SDL.h>
 #include "Hero.h"
 
+
+
+class bottleToDraw
+{
+public:
+	int actualImage;
+	bool bottleExists;
+	int bottleContents;
+	bottleToDraw();
+};
+
 class hookToDraw
 {
 public:
