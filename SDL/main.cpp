@@ -141,7 +141,7 @@ int main(int argc, char *argv[])
 		return -1;
 	SDL_Event event;
 	Hero hero(40, 30, maps[6]);
-	hero.setObj1(lancePierres);
+	hero.setObj1(marteau);
 	bool exit_program = false;
 	DataToDraw dat(&(maps[6]), window, &hero, true);
 	init(&dat);

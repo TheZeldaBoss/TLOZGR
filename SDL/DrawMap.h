@@ -126,7 +126,9 @@ public:
 	arrowToDraw arrow;
 	bombToDraw bomb;
 	bombToDraw explosion;
-	seedToDraw seed;
+	seedToDraw seed1;
+	seedToDraw seed2;
+	seedToDraw seed3;
 	hookToDraw hookshot;
 	fireSeedToDraw fireSeed;
 	bool useObject;

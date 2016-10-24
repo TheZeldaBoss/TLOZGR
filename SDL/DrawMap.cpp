@@ -422,13 +422,15 @@ int DrawMap(void *data, int pictureHeroX, int pictureHeroY)
 	SDL_Rect srcRect, dstRect;
 	SDL_Rect srcHero, dstHero;
 	SDL_Rect srcArrow, dstArrow;
-	SDL_Rect srcSeed, dstSeed;
+	SDL_Rect srcSeed1, dstSeed1;
+	SDL_Rect srcSeed2, dstSeed2;
+	SDL_Rect srcSeed3, dstSeed3;
 	SDL_Rect srcBomb, dstBomb;
 	SDL_Rect srcExplo, dstExplo;
 	SDL_Rect srcHook, srcChain, dstHook, dstChain1, dstChain2, dstChain3;
 	SDL_Rect srcFireSeed, dstFireSeed;
-	srcSeed.x = srcSeed.y = 0;
-	srcSeed.w = srcSeed.h = 16;
+	srcSeed1.x = srcSeed1.y = srcSeed2.x = srcSeed2.y = srcSeed3.x = srcSeed3.y = 0;
+	srcSeed1.w = srcSeed1.h = srcSeed2.w = srcSeed2.h = srcSeed3.w = srcSeed3.h = 16;
 	srcRect.x = (int)(xOrig * 8);
 	srcRect.y = (int)(yOrig * 8);
 	srcRect.w = 320;
@@ -445,9 +447,12 @@ int DrawMap(void *data, int pictureHeroX, int pictureHeroY)
 	//utilisation lance pierres
 	else if (8 <= dat->getHero()->getActualPos() && dat->getHero()->getActualPos() < 12 && dat->getHero()->getActualPos() % 2 == 1)
 		srcHero.w = 37;
+	//utilisation marteau
+	else if (20 <= dat->getHero()->getActualPos() && dat->getHero()->getActualPos() < 24 && dat->getHero()->getActualPos() % 2 == 1)
+		srcHero.w = 48;
 	else
 		srcHero.w = 24;
-	srcHero.h = 37;
+	srcHero.h = 40;
 	if (dat->getHero())
 	srcHero.x = pictureHeroX * srcHero.w;
 	srcHero.y = pictureHeroY * srcHero.h;
@@ -481,13 +486,13 @@ int DrawMap(void *data, int pictureHeroX, int pictureHeroY)
 		dstHero.x -= 24;
 	//partie haute map
 	if (dat->getHero()->getPosY() <= 15)
-		dstHero.y = (int)(((dat->getHero()->getPosY()) * 16) - 72);
+		dstHero.y = (int)(((dat->getHero()->getPosY()) * 16) - 80);
 	//partie basse map
 	else if (dat->getHero()->getPosY() > dat->getMap()->getHeight() - 15)
-		dstHero.y = (int)(((30 - (((dat->getMap()->getHeight()) - (dat->getHero()->getPosY())))) * 16) - 72);
+		dstHero.y = (int)(((30 - (((dat->getMap()->getHeight()) - (dat->getHero()->getPosY())))) * 16) - 80);
 	//milieu map
 	else
-		dstHero.y = 240 - 72;
+		dstHero.y = 240 - 80;
 	//utilisation arc vers le bas
 	if (dat->useObject == true && dat->getHero()->getActualPos() == 4)
 		dstHero.y += 18;
@@ -497,14 +502,30 @@ int DrawMap(void *data, int pictureHeroX, int pictureHeroY)
 	//utilisation grappin vers la gauche
 	if (dat->useObject == true && dat->getHero()->getActualPos() == 13)
 		dstHero.x += 24;
+	//utilisation marteau vers le bas
+	if (dat->useObject == true && dat->getHero()->getActualPos() == 20)
+		dstHero.y += 14;
+	//utilisation marteau vers la droite
+	if (dat->useObject == true && dat->getHero()->getActualPos() == 23)
+		dstHero.x -= 16;
 	dstHero.w = srcHero.w * 2;
-	dstHero.h = 74;
-	dstSeed.w = dstSeed.h = 32;
-	//gestion position graine
-	if ((dat->seed.posX >= dat->getHero()->getPosX() - 20) && dat->seed.posX <= dat->getHero()->getPosX() + 20)
-		dstSeed.x = dstHero.x - (int)((dat->getHero()->getPosX() - dat->seed.posX) * 16);
-	if ((dat->seed.posY >= dat->getHero()->getPosY() - 20) && dat->seed.posY <= dat->getHero()->getPosY() + 20)
-		dstSeed.y = dstHero.y - (int)((dat->getHero()->getPosY() - dat->seed.posY) * 16);
+	dstHero.h = 80;
+	dstSeed1.w = dstSeed1.h = dstSeed2.w = dstSeed2.h = dstSeed3.w = dstSeed3.h = 32;
+	//gestion position graine 1
+	if ((dat->seed1.posX >= dat->getHero()->getPosX() - 20) && dat->seed1.posX <= dat->getHero()->getPosX() + 20)
+		dstSeed1.x = dstHero.x - (int)((dat->getHero()->getPosX() - dat->seed1.posX) * 16);
+	if ((dat->seed1.posY >= dat->getHero()->getPosY() - 20) && dat->seed1.posY <= dat->getHero()->getPosY() + 20)
+		dstSeed1.y = dstHero.y - (int)((dat->getHero()->getPosY() - dat->seed1.posY) * 16);
+	//gestion position graine 2
+	if ((dat->seed2.posX >= dat->getHero()->getPosX() - 20) && dat->seed1.posX <= dat->getHero()->getPosX() + 20)
+		dstSeed2.x = dstHero.x - (int)((dat->getHero()->getPosX() - dat->seed2.posX) * 16);
+	if ((dat->seed2.posY >= dat->getHero()->getPosY() - 20) && dat->seed2.posY <= dat->getHero()->getPosY() + 20)
+		dstSeed2.y = dstHero.y - (int)((dat->getHero()->getPosY() - dat->seed2.posY) * 16);
+	//gestion position graine 3
+	if ((dat->seed3.posX >= dat->getHero()->getPosX() - 20) && dat->seed3.posX <= dat->getHero()->getPosX() + 20)
+		dstSeed3.x = dstHero.x - (int)((dat->getHero()->getPosX() - dat->seed3.posX) * 16);
+	if ((dat->seed3.posY >= dat->getHero()->getPosY() - 20) && dat->seed3.posY <= dat->getHero()->getPosY() + 20)
+		dstSeed3.y = dstHero.y - (int)((dat->getHero()->getPosY() - dat->seed3.posY) * 16);
 	//gestion position flèche
 	if ((dat->arrow.getPosX() >= dat->getHero()->getPosX() - 20) && dat->arrow.getPosX() <= dat->getHero()->getPosX() + 20)
 		dstArrow.x = dstHero.x - (int)((dat->getHero()->getPosX() - dat->arrow.getPosX()) * 16);
@@ -599,8 +620,12 @@ int DrawMap(void *data, int pictureHeroX, int pictureHeroY)
 	SDL_RenderCopy(dat->getRenderer(), dat->getTextureLink(), &srcHero, &dstHero);
 	if (dat->arrow.getActualImage() >= 0)
 		SDL_RenderCopy(dat->getRenderer(), dat->getTextureArrow(), &srcArrow, &dstArrow);
-	if (dat->seed.seedExists)
-		SDL_RenderCopy(dat->getRenderer(), dat->getTextureSeed(), &srcSeed, &dstSeed);
+	if (dat->seed1.seedExists)
+		SDL_RenderCopy(dat->getRenderer(), dat->getTextureSeed(), &srcSeed1, &dstSeed1);
+	if (dat->seed2.seedExists)
+		SDL_RenderCopy(dat->getRenderer(), dat->getTextureSeed(), &srcSeed2, &dstSeed2);
+	if (dat->seed3.seedExists)
+		SDL_RenderCopy(dat->getRenderer(), dat->getTextureSeed(), &srcSeed3, &dstSeed3);
 	if (dat->bomb.bombExists)
 		SDL_RenderCopy(dat->getRenderer(), dat->getTextureBomb(), &srcBomb, &dstBomb);
 	if (dat->explosion.bombExists)

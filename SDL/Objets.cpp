@@ -233,50 +233,50 @@ int use_slingshot(void *data)
 	dat->getHero()->setActualImage(0);
 	dat->getHero()->setActualPos(curPos - 8);
 	dat->needDraw = true;
-	if (dat->seed.seedExists == false)
+	if (dat->seed1.seedExists == false)
 	{
-		dat->seed.seedExists = true;
-		dat->seed.posX = (float)(dat->getHero()->getPosX() + .5);
-		dat->seed.posY = dat->getHero()->getPosY() + 2;
+		dat->seed1.seedExists = true;
+		dat->seed1.posX = (float)(dat->getHero()->getPosX() + .5);
+		dat->seed1.posY = dat->getHero()->getPosY() + 2;
 		if (dat->getHero()->getActualPos() % 4 == 0)//bas
 		{
-			while (dat->seed.posY < (float)(dat->getMap()->getHeight() - 1) && dat->getMap()->getLayerWalls()[(int)dat->seed.posY][(int)dat->seed.posX] == 0)
+			while (dat->seed1.posY < (float)(dat->getMap()->getHeight() - 1) && dat->getMap()->getLayerWalls()[(int)dat->seed1.posY][(int)dat->seed1.posX] == 0)
 			{
 				dat->needDraw = true;
-				dat->seed.posY += .125;
+				dat->seed1.posY += .125;
 				Sleep(2);
 			}
-			dat->seed.seedExists = false;
+			dat->seed1.seedExists = false;
 		}
 		if (dat->getHero()->getActualPos() % 4 == 1)//gauche
 		{
-			while (dat->seed.posX > 0 && dat->getMap()->getLayerWalls()[(int)(dat->seed.posY)][(int)(dat->seed.posX)] == 0)
+			while (dat->seed1.posX > 0 && dat->getMap()->getLayerWalls()[(int)(dat->seed1.posY)][(int)(dat->seed1.posX)] == 0)
 			{
 				dat->needDraw = true;
-				dat->seed.posX -= .125;
+				dat->seed1.posX -= .125;
 				Sleep(2);
 			}
-			dat->seed.seedExists = false;
+			dat->seed1.seedExists = false;
 		}
 		if (dat->getHero()->getActualPos() % 4 == 2)//haut
 		{
-			while (dat->seed.posY > 0 && dat->getMap()->getLayerWalls()[(int)(dat->seed.posY)][(int)(dat->seed.posX)] == 0)
+			while (dat->seed1.posY > 0 && dat->getMap()->getLayerWalls()[(int)(dat->seed1.posY)][(int)(dat->seed1.posX)] == 0)
 			{
 				dat->needDraw = true;
-				dat->seed.posY -= .125;
+				dat->seed1.posY -= .125;
 				Sleep(2);
 			}
-			dat->seed.seedExists = false;
+			dat->seed1.seedExists = false;
 		}
 		if (dat->getHero()->getActualPos() % 4 == 3)//droite
 		{
-			while (dat->seed.posX < dat->getMap()->getWidth() && dat->getMap()->getLayerWalls()[(int)(dat->seed.posY)][(int)(dat->seed.posX)] == 0)
+			while (dat->seed1.posX < dat->getMap()->getWidth() && dat->getMap()->getLayerWalls()[(int)(dat->seed1.posY)][(int)(dat->seed1.posX)] == 0)
 			{
 				dat->needDraw = true;
-				dat->seed.posX += .125;
+				dat->seed1.posX += .125;
 				Sleep(2);
 			}
-			dat->seed.seedExists = false;
+			dat->seed1.seedExists = false;
 		}
 	}
 	dejala = false;
@@ -569,6 +569,7 @@ int use_lantern(void *data)
 		dat->needDraw = true;
 		Sleep(20);
 	}
+	dat->useObject = false; 
 	for (int i = 0; i < 5; i++)
 	{
 		for (int j = 0; j < 4; j++)
@@ -582,7 +583,6 @@ int use_lantern(void *data)
 	dat->fireSeed.fireSeedExists = false;
 	dat->getHero()->setActualPos(curpos - 16);
 	dat->needDraw = true;
-	dat->useObject = false;
 	dejala = false;
 	return (0);
 }
@@ -596,12 +596,44 @@ int use_boomerang(void *data)
 int use_hammer(void *data)
 {
 	DataToDraw *dat = (DataToDraw *)data;
+	if (dejala) return 0;
+
+	dejala = true;
+
+	int curpos = 20 + dat->getHero()->getActualPos();
+	dat->useObject = true;
+	unsigned int anim = 0;
+	while (anim < 4)
+	{
+		dat->getHero()->setActualPos(curpos);
+		dat->getHero()->setActualImage(anim);
+		dat->needDraw = true;
+		anim++;
+		Sleep(80);
+	}
+	while (anim > 0)
+	{
+		anim--;
+		dat->getHero()->setActualPos(curpos);
+		dat->getHero()->setActualImage(anim);
+		dat->needDraw = true;
+		Sleep(80);
+	}
+	dat->getHero()->setActualImage(4);
+	dat->needDraw = true;
+	Sleep(160);
+	dat->useObject = false;
+	dat->getHero()->setActualImage(0);
+	dat->getHero()->setActualPos(curpos - 20);
+	dat->needDraw = true;
+	dejala = false;
 	return (0);
 }
 
 int use_lightBow(void *data)
 {
-	DataToDraw *dat = (DataToDraw *)data;
+	//DataToDraw *dat = (DataToDraw *)data;
+	use_bow(data);
 	return (0);
 }
 
@@ -614,6 +646,174 @@ int use_boots(void *data)
 int use_superSlingshot(void *data)
 {
 	DataToDraw *dat = (DataToDraw *)data;
+	if (dejala) return 0;
+
+	dejala = true;
+
+	int curPos = 8 + dat->getHero()->getActualPos();
+	dat->useObject = true;
+	unsigned int anim = 0;
+	while (anim < 4)
+	{
+		dat->getHero()->setActualPos(curPos);
+		dat->getHero()->setActualImage(anim);
+		dat->needDraw = true;
+		Sleep(80);
+		anim++;
+	}
+	dat->useObject = false;
+	dat->getHero()->setActualImage(0);
+	dat->getHero()->setActualPos(curPos - 8);
+	dat->needDraw = true;
+	if (dat->seed1.seedExists == false && dat->seed2.seedExists == false && dat->seed3.seedExists == false)
+	{
+		dat->seed1.seedExists = true;
+		dat->seed2.seedExists = true;
+		dat->seed3.seedExists = true;
+		dat->seed1.posX = (float)(dat->getHero()->getPosX() + .5);
+		dat->seed1.posY = dat->getHero()->getPosY() + 2;
+		dat->seed2.posX = (float)(dat->getHero()->getPosX() + .5);
+		dat->seed2.posY = dat->getHero()->getPosY() + 2;
+		dat->seed3.posX = (float)(dat->getHero()->getPosX() + .5);
+		dat->seed3.posY = dat->getHero()->getPosY() + 2;
+		if (dat->getHero()->getActualPos() % 4 == 0)//bas
+		{
+			while (dat->seed1.seedExists || dat->seed2.seedExists || dat->seed3.seedExists)
+			{
+				//seed1 : vertical
+				if (dat->seed1.posY <= (float)(dat->getMap()->getHeight() - 1) && dat->getMap()->getLayerWalls()[(int)dat->seed1.posY][(int)dat->seed1.posX] == 0)
+				{
+					dat->needDraw = true;
+					dat->seed1.posY += .125;
+					Sleep(2);
+				}
+				else
+					dat->seed1.seedExists = false;
+				//seed2 : diag bas gauche
+				if (dat->seed2.posY <= (float)(dat->getMap()->getHeight() - 1)&& dat->seed2.posX > 0.0 && dat->getMap()->getLayerWalls()[(int)dat->seed2.posY][(int)dat->seed2.posX] == 0)
+				{
+					dat->needDraw = true;
+					dat->seed2.posY += .125;
+					dat->seed2.posX -= (float)0.081;
+					Sleep(2);
+				}
+				else
+					dat->seed2.seedExists = false;
+				//seed3 : bas droite
+				if (dat->seed3.posY <= (float)(dat->getMap()->getHeight() - 1) && dat->seed3.posX <= dat->getMap()->getWidth() - 1 && dat->getMap()->getLayerWalls()[(int)dat->seed3.posY][(int)dat->seed3.posX] == 0)
+				{
+					dat->needDraw = true;
+					dat->seed3.posY += .125;
+					dat->seed3.posX += (float).081;
+					Sleep(2);
+				}
+				else
+					dat->seed3.seedExists = false;
+			}
+		}
+		if (dat->getHero()->getActualPos() % 4 == 1)//gauche
+		{
+			while (dat->seed1.seedExists || dat->seed2.seedExists || dat->seed3.seedExists)
+			{
+				//seed1 : horizontale
+				if (dat->seed1.posX > 0 && dat->getMap()->getLayerWalls()[(int)(dat->seed1.posY)][(int)(dat->seed1.posX)] == 0)
+				{
+					dat->needDraw = true;
+					dat->seed1.posX -= .125;
+					Sleep(2);
+				}
+				else
+					dat->seed1.seedExists = false;
+				//seed2 : haut gauche
+				if (dat->seed2.posX > 0.0 && dat->seed2.posY > 0.0 && dat->getMap()->getLayerWalls()[(int)(dat->seed2.posY)][(int)(dat->seed2.posX)] == 0)
+				{
+					dat->needDraw = true;
+					dat->seed2.posX -= .125;
+					dat->seed2.posY -= (float).081;
+					Sleep(2);
+				}
+				else
+					dat->seed2.seedExists = false;
+				//seed3 : haut droite
+				if (dat->seed3.posX > 0.0 && dat->seed3.posY <= dat->getMap()->getHeight() && dat->getMap()->getLayerWalls()[(int)(dat->seed3.posY)][(int)(dat->seed3.posX)] == 0)
+				{
+					dat->needDraw = true;
+					dat->seed3.posX -= .125;
+					dat->seed3.posY += (float).081;
+					Sleep(2);
+				}
+				else
+					dat->seed3.seedExists = false;
+			}
+		}
+		if (dat->getHero()->getActualPos() % 4 == 2)//haut
+		{
+			while (dat->seed1.seedExists || dat->seed2.seedExists || dat->seed3.seedExists)
+			{
+				if (dat->seed1.posY > 0.0 && dat->getMap()->getLayerWalls()[(int)(dat->seed1.posY)][(int)(dat->seed1.posX)] == 0)
+				{
+					dat->needDraw = true;
+					dat->seed1.posY -= .125;
+					Sleep(2);
+				}
+				else
+					dat->seed1.seedExists = false;
+				//haut gauche
+				if (dat->seed2.posY > 0.0 && dat->seed2.posX > 0.0 && dat->getMap()->getLayerWalls()[(int)(dat->seed2.posY)][(int)(dat->seed2.posX)] == 0)
+				{
+					dat->needDraw = true;
+					dat->seed2.posX -= (float).081;
+					dat->seed2.posY -= .125;
+					Sleep(2);
+				}
+				else
+					dat->seed2.seedExists = false;
+				if (dat->seed3.posY > 0.0 && dat->seed3.posX <= dat->getMap()->getWidth() && dat->getMap()->getLayerWalls()[(int)(dat->seed3.posY)][(int)(dat->seed3.posX)] == 0)
+				{
+					dat->needDraw = true;
+					dat->seed3.posX += (float).081;
+					dat->seed3.posY -= .125;
+					Sleep(2);
+				}
+				else
+					dat->seed3.seedExists = false;
+			}
+		}
+		if (dat->getHero()->getActualPos() % 4 == 3)//droite
+		{
+			while (dat->seed1.seedExists || dat->seed2.seedExists || dat->seed3.seedExists)
+			{
+				if (dat->seed1.posX <= dat->getMap()->getWidth() && dat->getMap()->getLayerWalls()[(int)(dat->seed1.posY)][(int)(dat->seed1.posX)] == 0)
+				{
+					dat->needDraw = true;
+					dat->seed1.posX += .125;
+					Sleep(2);
+				}
+				else
+					dat->seed1.seedExists = false;
+				//haut
+				if (dat->seed2.posX <= dat->getMap()->getWidth() && dat->seed2.posY > 0.0 && dat->getMap()->getLayerWalls()[(int)(dat->seed2.posY)][(int)(dat->seed2.posX)] == 0)
+				{
+					dat->needDraw = true;
+					dat->seed2.posY -= (float).081;
+					dat->seed2.posX += .125;
+					Sleep(2);
+				}
+				else
+					dat->seed2.seedExists = false;
+				if (dat->seed3.posX <= dat->getMap()->getWidth() && dat->seed3.posY <= dat->getMap()->getHeight() && dat->getMap()->getLayerWalls()[(int)(dat->seed3.posY)][(int)(dat->seed3.posX)] == 0)
+				{
+					dat->needDraw = true;
+					dat->seed3.posX += .125;
+					dat->seed3.posY += (float).081;
+					Sleep(2);
+				}
+				else
+					dat->seed3.seedExists = false;
+			}
+		}
+	}
+	dejala = false;
 	return (0);
 }
 
@@ -668,12 +868,15 @@ void use_objet(int objet, void *data)
 		thread = SDL_CreateThread(use_boots, "boots", data);
 		break;
 	case 10:
-		thread = SDL_CreateThread(use_bottle1, "bottle", data);
+		thread = SDL_CreateThread(use_superSlingshot, "slingshot", data);
 		break;
 	case 11:
-		thread = SDL_CreateThread(use_bottle2, "bottle", data);
+		thread = SDL_CreateThread(use_bottle1, "bottle", data);
 		break;
 	case 12:
+		thread = SDL_CreateThread(use_bottle2, "bottle", data);
+		break;
+	case 13:
 		thread = SDL_CreateThread(use_ocarina, "ocarina", data);
 		break;
 	}
