@@ -511,6 +511,13 @@ int DrawMap(void *data, int pictureHeroX, int pictureHeroY)
 		srcHero.w = 28;
 	else if (24 <= dat->getHero()->getActualPos() && dat->getHero()->getActualPos() < 28 && dat->getHero()->getActualPos() % 2 == 0)
 		srcHero.w = 32;
+	//utilisation flacon potion
+	else if (28 <= dat->getHero()->getActualPos() && dat->getHero()->getActualPos() < 32 && dat->getHero()->getActualPos() % 2 == 1)
+		srcHero.w = 23;
+	else if (28 <= dat->getHero()->getActualPos() && dat->getHero()->getActualPos() < 32 && dat->getHero()->getActualPos() % 2 == 0)
+		srcHero.w = 22;
+	else if (dat->getHero()->getActualPos() == 32)
+		srcHero.w = 25;
 	else
 		srcHero.w = 24;
 	srcHero.h = 40;
@@ -569,10 +576,28 @@ int DrawMap(void *data, int pictureHeroX, int pictureHeroY)
 	//utilisation marteau vers la droite
 	if (dat->useObject == true && dat->getHero()->getActualPos() == 23)
 		dstHero.x -= 16;
-	if (dat->useObject == true && dat->getHero()->getActualPos() == 24)
+	if (dat->useObject == true && dat->getHero()->getActualPos() == 24)//flacon vide vers le bas
 	{
 		dstHero.x -= 12;
 		dstHero.y += 10;
+	}
+	if (dat->useObject == true && dat->getHero()->getActualPos() == 28)//flacon avec fee
+	{
+		dstHero.y += 6;
+		dstHero.x += 4;
+	}
+	if (dat->useObject == true && dat->getHero()->getActualPos() == 29)//vers la gauche
+	{
+		dstHero.x += 16;
+	}
+	if (dat->useObject == true && dat->getHero()->getActualPos() == 31)
+	{
+		dstHero.x += 10;
+	}
+	if (dat->useObject == true && dat->getHero()->getActualPos() == 32)//potion vers le bas
+	{
+		dstHero.y += 10;
+		dstHero.x += 6;
 	}
 	dstHero.w = srcHero.w * 2;
 	dstHero.h = 80;
