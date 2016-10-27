@@ -17,6 +17,14 @@ uint32 rmask = 0xff000000, gmask = 0x00ff0000, bmask = 0x0000ff00, amask = 0x000
 Uint32 rmask = 0x000000ff, gmask = 0x0000ff00, bmask = 0x00ff0000, amask = 0xff000000;
 #endif
 
+bottleToDraw::bottleToDraw()
+{
+	actualImage = 0;
+	bottleContents = empty;
+}
+
+
+
 seedToDraw::seedToDraw()
 {
 	this->posX = -1;
@@ -450,6 +458,11 @@ int DrawMap(void *data, int pictureHeroX, int pictureHeroY)
 	//utilisation marteau
 	else if (20 <= dat->getHero()->getActualPos() && dat->getHero()->getActualPos() < 24 && dat->getHero()->getActualPos() % 2 == 1)
 		srcHero.w = 48;
+	//utilisation flacon vide
+	else if (24 <= dat->getHero()->getActualPos() && dat->getHero()->getActualPos() < 28 && dat->getHero()->getActualPos() % 2 == 1)
+		srcHero.w = 28;
+	else if (24 <= dat->getHero()->getActualPos() && dat->getHero()->getActualPos() < 28 && dat->getHero()->getActualPos() % 2 == 0)
+		srcHero.w = 32;
 	else
 		srcHero.w = 24;
 	srcHero.h = 40;
@@ -508,6 +521,11 @@ int DrawMap(void *data, int pictureHeroX, int pictureHeroY)
 	//utilisation marteau vers la droite
 	if (dat->useObject == true && dat->getHero()->getActualPos() == 23)
 		dstHero.x -= 16;
+	if (dat->useObject == true && dat->getHero()->getActualPos() == 24)
+	{
+		dstHero.x -= 12;
+		dstHero.y += 10;
+	}
 	dstHero.w = srcHero.w * 2;
 	dstHero.h = 80;
 	dstSeed1.w = dstSeed1.h = dstSeed2.w = dstSeed2.h = dstSeed3.w = dstSeed3.h = 32;

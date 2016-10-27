@@ -630,13 +630,6 @@ int use_hammer(void *data)
 	return (0);
 }
 
-int use_lightBow(void *data)
-{
-	//DataToDraw *dat = (DataToDraw *)data;
-	use_bow(data);
-	return (0);
-}
-
 int use_superSlingshot(void *data)
 {
 	DataToDraw *dat = (DataToDraw *)data;
@@ -814,6 +807,69 @@ int use_superSlingshot(void *data)
 int use_bottle1(void *data)
 {
 	DataToDraw *dat = (DataToDraw *)data;
+	dejala = true;
+	int curpos = dat->getHero()->getActualPos() + 24;
+	unsigned int anim = 0;
+	if (dat->bottle1.bottleContents == empty)
+	{
+		dat->useObject = true;
+		dat->getHero()->setActualPos(curpos);
+		//cas gauche ou droite : 8 frames
+		if (dat->getHero()->getActualPos() % 2 == 1)
+		{
+			while (anim < 6)
+			{
+				dat->getHero()->setActualImage(anim);
+				anim++;
+				dat->needDraw = true;
+				Sleep(40);
+			}
+			Sleep(500);
+			while (anim < 8)
+			{
+				dat->getHero()->setActualImage(anim);
+				anim++;
+				dat->needDraw = true;
+				Sleep(40);
+			}
+			dat->getHero()->setActualPos(curpos - 24);
+			dat->getHero()->setActualImage(0);
+			dat->needDraw = true;
+			dejala = false;
+			dat->useObject = false;
+		}
+		else
+		{
+			while (anim < 5)
+			{
+				dat->getHero()->setActualImage(anim);
+				anim++;
+				dat->needDraw = true;
+				Sleep(40);
+			}
+			Sleep(500);
+			while (anim < 7)
+			{
+				dat->getHero()->setActualImage(anim);
+				anim++;
+				dat->needDraw = true;
+				Sleep(40);
+			}
+			dat->getHero()->setActualPos(curpos - 24);
+			dat->getHero()->setActualImage(0);
+			dat->needDraw = true;
+			dejala = false;
+			dat->useObject = false;
+		}
+	}
+	else if (dat->bottle1.bottleContents == fairy)
+	{
+
+	}
+	else//bottleContents = potion
+	{
+
+	}
 	return (0);
 }
 
@@ -856,18 +912,18 @@ void use_objet(int objet, void *data)
 		thread = SDL_CreateThread(use_hammer, "hammer", data);
 		break;
 	case 8:
-		thread = SDL_CreateThread(use_lightBow, "lightBow", data);
+		thread = SDL_CreateThread(use_bow, "lightBow", data);
 		break;
 	case 9:
 		thread = SDL_CreateThread(use_superSlingshot, "slingshot", data);
 		break;
-	case 11:
+	case 10:
 		thread = SDL_CreateThread(use_bottle1, "bottle", data);
 		break;
-	case 12:
+	case 11:
 		thread = SDL_CreateThread(use_bottle2, "bottle", data);
 		break;
-	case 13:
+	case 12:
 		thread = SDL_CreateThread(use_ocarina, "ocarina", data);
 		break;
 	}

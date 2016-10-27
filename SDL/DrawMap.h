@@ -6,12 +6,10 @@
 #include "Hero.h"
 
 
-
 class bottleToDraw
 {
 public:
 	int actualImage;
-	bool bottleExists;
 	int bottleContents;
 	bottleToDraw();
 };
@@ -142,6 +140,8 @@ public:
 	seedToDraw seed3;
 	hookToDraw hookshot;
 	fireSeedToDraw fireSeed;
+	bottleToDraw bottle1;
+	bottleToDraw bottle2;
 	bool useObject;
 	bool needDraw;
 	int doTransition;
