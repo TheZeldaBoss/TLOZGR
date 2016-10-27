@@ -64,6 +64,14 @@ boomToDraw::boomToDraw()
 	this->boomerangExists = false;
 }
 
+ocarinaToDraw::ocarinaToDraw()
+{
+	this->posX = -1;
+	this->posY = -1;
+	this->actualImage = -1;
+	this->ocarinaExists = false;
+}
+
 int arrowToDraw::getActualPos()
 {
 	return actualPos;
@@ -312,6 +320,16 @@ void DataToDraw::setTextureBoomerang(SDL_Texture *texture)
 	pTextureBoomerang = texture;
 }
 
+SDL_Texture *DataToDraw::getTextureOcarina()
+{
+	return pTextureOcarina;
+}
+
+void DataToDraw::setTextureOcarina(SDL_Texture *texture)
+{
+	pTextureOcarina = texture;
+}
+
 void DataToDraw::setTextureFireSeed(SDL_Texture *texture)
 {
 	pTextureFireSeed = texture;
@@ -370,6 +388,7 @@ void init(DataToDraw *dat)
 		dat->setTextureSeed(SDL_CreateTextureFromSurface(dat->getRenderer(), IMG_Load("./data/images/equipement/seed.png")));
 		dat->setTextureHookshot(SDL_CreateTextureFromSurface(dat->getRenderer(), IMG_Load("./data/images/equipement/hookshot.png")));
 		dat->setTextureBoomerang(SDL_CreateTextureFromSurface(dat->getRenderer(), IMG_Load("./data/images/equipement/boomerang.png")));
+		dat->setTextureOcarina(SDL_CreateTextureFromSurface(dat->getRenderer(), IMG_Load("./data/images/equipement/ocarina.png")));
 		dat->setTextureFireSeed(SDL_CreateTextureFromSurface(dat->getRenderer(), IMG_Load("./data/images/equipement/fireSeed.png")));
 		dat->setMapCeiling(SDL_CreateRGBSurface(0, dat->getMap()->getWidth() * 8, dat->getMap()->getHeight() * 8, 32, rmask, gmask, bmask, amask));
 		dat->setMapFloor(SDL_CreateRGBSurface(0, dat->getMap()->getWidth() * 8, dat->getMap()->getHeight() * 8, 32, rmask, gmask, bmask, amask));
@@ -454,7 +473,7 @@ int DrawMap(void *data, int pictureHeroX, int pictureHeroY)
 	SDL_Rect srcSeed3, dstSeed3;
 	SDL_Rect srcBomb, dstBomb;
 	SDL_Rect srcExplo, dstExplo;
-	SDL_Rect srcHook, srcChain, dstHook, srcBoom, dstBoom, dstChain1, dstChain2, dstChain3;
+	SDL_Rect srcHook, srcChain, dstHook, srcBoom, dstBoom, srcOcarina, dstOcarina, dstChain1, dstChain2, dstChain3;
 	SDL_Rect srcFireSeed, dstFireSeed;
 	srcSeed1.x = srcSeed1.y = srcSeed2.x = srcSeed2.y = srcSeed3.x = srcSeed3.y = 0;
 	srcSeed1.w = srcSeed1.h = srcSeed2.w = srcSeed2.h = srcSeed3.w = srcSeed3.h = 16;
@@ -465,6 +484,12 @@ int DrawMap(void *data, int pictureHeroX, int pictureHeroY)
 	dstRect.x = dstRect.y = 0;
 	dstRect.w = 640;
 	dstRect.h = 480;
+
+	srcOcarina.x = dat->ocarina.actualImage * 20;
+	srcOcarina.y = 0;
+	srcOcarina.w = 20;
+	srcOcarina.h = 23;
+
 	srcBoom.x = dat->boomerang.actualImage * 18;
 	srcBoom.y = 0;
 	srcBoom.w = 18;
@@ -686,6 +711,15 @@ int DrawMap(void *data, int pictureHeroX, int pictureHeroY)
 		dstBoom.w = 18 * 2;
 		dstBoom.h = 18 * 2;
 		SDL_RenderCopy(dat->getRenderer(), dat->getTextureBoomerang(), &srcBoom, &dstBoom);
+	}
+
+	if (dat->ocarina.ocarinaExists) // Ocarina
+	{
+		dstOcarina.x = dstHero.x - (int)((dat->getHero()->getPosX() - dat->ocarina.posX) * 16) + 12;
+		dstOcarina.y = dstHero.y - (int)((dat->getHero()->getPosY() - dat->ocarina.posY) * 16) + 32;
+		dstOcarina.w = 20 * 2;
+		dstOcarina.h = 23 * 2;
+		SDL_RenderCopy(dat->getRenderer(), dat->getTextureOcarina(), &srcBoom, &dstBoom);
 	}
 	
 	SDL_RenderCopy(dat->getRenderer(), dat->getTextureCeiling(), &srcRect, &dstRect);

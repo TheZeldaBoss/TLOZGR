@@ -1,4 +1,4 @@
-﻿La génération a démarré 27/10/2016 14:38:17.
+﻿La génération a démarré 27/10/2016 16:41:09.
      1>Projet "C:\Users\Jimmy\Desktop\TLOZ\TLOZGR\SDL\SDL.vcxproj" sur le nœud 2 (Build cible(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /Od /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Objets.cpp
@@ -18,4 +18,4 @@
 
 La génération a réussi.
 
-Temps écoulé 00:00:01.26
+Temps écoulé 00:00:01.10

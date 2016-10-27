@@ -50,6 +50,15 @@ public:
 	boomToDraw();
 };
 
+class ocarinaToDraw
+{
+public:
+	int actualImage;
+	float posX, posY;
+	bool ocarinaExists;
+	ocarinaToDraw();
+};
+
 class arrowToDraw
 {
 private:
@@ -94,6 +103,7 @@ private:
 	SDL_Texture *pTextureCeiling;
 	SDL_Texture *pTextureArrow;
 	SDL_Texture *pTextureBoomerang;
+	SDL_Texture *pTextureOcarina;
 	SDL_Texture *pTextureBomb;
 	SDL_Texture *pTextureSeed;
 	SDL_Texture *pTextureExplosion;
@@ -139,6 +149,8 @@ public:
 	void setTextureHookshot(SDL_Texture *);
 	SDL_Texture *getTextureBoomerang();
 	void setTextureBoomerang(SDL_Texture *);
+	SDL_Texture *getTextureOcarina();
+	void setTextureOcarina(SDL_Texture *);
 	SDL_Surface *getMapFloor();
 	SDL_Texture *getTextureFireSeed(); 
 	void setTextureFireSeed(SDL_Texture *);
@@ -153,6 +165,7 @@ public:
 	seedToDraw seed3;
 	hookToDraw hookshot;
 	boomToDraw boomerang;
+	ocarinaToDraw ocarina;
 	fireSeedToDraw fireSeed;
 	bottleToDraw bottle1;
 	bottleToDraw bottle2;

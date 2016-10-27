@@ -959,7 +959,7 @@ int use_bottle1(void *data)
 	{
 
 	}
-	else//bottleContents = potion
+	else //bottleContents = potion
 	{
 
 	}
@@ -975,6 +975,25 @@ int use_bottle2(void *data)
 int use_ocarina(void *data)
 {
 	DataToDraw *dat = (DataToDraw *)data;
+	int anim = 0;
+	int curPos = dat->getHero()->getActualPos() + 28;
+	dat->getHero()->setActualPos(curPos);
+	dat->useObject = true;
+	while (anim != 3)
+	{
+		dat->getHero()->setActualImage(anim);
+		dat->needDraw = true;
+		anim++;
+		Sleep(1000);
+	}
+	while (anim != 2)
+	{
+		dat->getHero()->setActualImage(anim);
+		dat->needDraw = true;
+		anim++;
+		Sleep(1000);
+	}
+	dat->useObject = false;
 	return (0);
 }
 
