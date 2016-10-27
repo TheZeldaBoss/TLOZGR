@@ -901,10 +901,10 @@ int use_bottle1(void *data)
 {
 	DataToDraw *dat = (DataToDraw *)data;
 	dejala = true;
-	int curpos = dat->getHero()->getActualPos() + 24;
 	unsigned int anim = 0;
 	if (dat->bottle1.bottleContents == empty)
 	{
+		int curpos = dat->getHero()->getActualPos() + 24;
 		dat->useObject = true;
 		dat->getHero()->setActualPos(curpos);
 		//cas gauche ou droite : 8 frames
@@ -940,13 +940,13 @@ int use_bottle1(void *data)
 				dat->needDraw = true;
 				Sleep(40);
 			}
-			Sleep(500);
+			Sleep(200);
 			while (anim < 7)
 			{
 				dat->getHero()->setActualImage(anim);
 				anim++;
 				dat->needDraw = true;
-				Sleep(40);
+				Sleep(80);
 			}
 			dat->getHero()->setActualPos(curpos - 24);
 			dat->getHero()->setActualImage(0);
@@ -957,11 +957,50 @@ int use_bottle1(void *data)
 	}
 	else if (dat->bottle1.bottleContents == fairy)
 	{
-
+		int curpos = dat->getHero()->getActualPos() + 28;
+		dat->useObject = true;
+		dat->getHero()->setActualPos(curpos);
+		//cas gauche ou droite : 8 frames
+		while (anim < 13)
+		{
+			dat->getHero()->setActualImage(anim);
+			anim++;
+			dat->needDraw = true;
+			if (anim % 4 == 3)
+				Sleep(200);
+			else
+				Sleep(40);
+		}
+		dat->getHero()->setActualPos(curpos - 28);
+		dat->getHero()->setActualImage(0);
+		dat->needDraw = true;
+		dejala = false;
+		dat->useObject = false;
+		
 	}
 	else//bottleContents = potion
 	{
-
+		int curpos = dat->getHero()->getActualPos();
+		dat->useObject = true;
+		dat->getHero()->setActualPos(32);
+		//cas gauche ou droite : 8 frames
+		while (anim < 13)
+		{
+			dat->getHero()->setActualImage(anim);
+			anim++;
+			dat->needDraw = true;
+			if (anim == 4 || anim == 7)
+				Sleep(200);
+			else if (anim > 4 && anim < 7)
+				Sleep(100);
+			else
+				Sleep(40);
+		}
+		dat->getHero()->setActualPos(0);
+		dat->getHero()->setActualImage(0);
+		dat->needDraw = true;
+		dejala = false;
+		dat->useObject = false;
 	}
 	return (0);
 }
