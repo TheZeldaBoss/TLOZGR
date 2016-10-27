@@ -40,6 +40,16 @@ public:
 	bombToDraw();
 };
 
+class boomToDraw
+{
+public:
+	int actualImage;
+	float posX, posY;
+	bool boomerangExists;
+	bool back;
+	boomToDraw();
+};
+
 class arrowToDraw
 {
 private:
@@ -83,6 +93,7 @@ private:
 	SDL_Texture *pTextureFloor;
 	SDL_Texture *pTextureCeiling;
 	SDL_Texture *pTextureArrow;
+	SDL_Texture *pTextureBoomerang;
 	SDL_Texture *pTextureBomb;
 	SDL_Texture *pTextureSeed;
 	SDL_Texture *pTextureExplosion;
@@ -126,6 +137,8 @@ public:
 	void setTextureLink(SDL_Texture *);
 	SDL_Texture *getTextureHookshot();
 	void setTextureHookshot(SDL_Texture *);
+	SDL_Texture *getTextureBoomerang();
+	void setTextureBoomerang(SDL_Texture *);
 	SDL_Surface *getMapFloor();
 	SDL_Texture *getTextureFireSeed(); 
 	void setTextureFireSeed(SDL_Texture *);
@@ -139,6 +152,7 @@ public:
 	seedToDraw seed2;
 	seedToDraw seed3;
 	hookToDraw hookshot;
+	boomToDraw boomerang;
 	fireSeedToDraw fireSeed;
 	bottleToDraw bottle1;
 	bottleToDraw bottle2;

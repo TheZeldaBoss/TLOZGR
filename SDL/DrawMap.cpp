@@ -56,6 +56,14 @@ hookToDraw::hookToDraw()
 	this->hookshotExists = false;
 }
 
+boomToDraw::boomToDraw()
+{
+	this->posX = -1;
+	this->posY = -1;
+	this->actualImage = -1;
+	this->boomerangExists = false;
+}
+
 int arrowToDraw::getActualPos()
 {
 	return actualPos;
@@ -294,6 +302,16 @@ void DataToDraw::setTextureHookshot(SDL_Texture *texture)
 	this->pTextureHookshot = texture;
 }
 
+SDL_Texture *DataToDraw::getTextureBoomerang()
+{
+	return pTextureBoomerang;
+}
+
+void DataToDraw::setTextureBoomerang(SDL_Texture *texture)
+{
+	pTextureBoomerang = texture;
+}
+
 void DataToDraw::setTextureFireSeed(SDL_Texture *texture)
 {
 	pTextureFireSeed = texture;
@@ -344,56 +362,57 @@ void init(DataToDraw *dat)
 		std::cerr << "sprite creation failed" << std::endl;
 		exit(-1);
 	}
-	dat->setLink(IMG_Load("./data/images/Link/Link_walk.png"));
-	dat->setTextureLink(SDL_CreateTextureFromSurface(dat->getRenderer(), dat->getLink()));
-	dat->setTextureArrow(SDL_CreateTextureFromSurface(dat->getRenderer(), IMG_Load("./data/images/equipement/arrows.png")));
-	dat->setTextureBomb(SDL_CreateTextureFromSurface(dat->getRenderer(), IMG_Load("./data/images/equipement/bombs.png")));
-	dat->setTextureExplosion(SDL_CreateTextureFromSurface(dat->getRenderer(), IMG_Load("./data/images/equipement/explosion.png")));
-	dat->setTextureSeed(SDL_CreateTextureFromSurface(dat->getRenderer(), IMG_Load("./data/images/equipement/seed.png")));
-	dat->setTextureHookshot(SDL_CreateTextureFromSurface(dat->getRenderer(), IMG_Load("./data/images/equipement/hookshot.png")));
-	dat->setTextureFireSeed(SDL_CreateTextureFromSurface(dat->getRenderer(), IMG_Load("./data/images/equipement/fireSeed.png")));
-	dat->setMapCeiling(SDL_CreateRGBSurface(0, dat->getMap()->getWidth() * 8, dat->getMap()->getHeight() * 8, 32, rmask, gmask, bmask, amask));
-	dat->setMapFloor(SDL_CreateRGBSurface(0, dat->getMap()->getWidth() * 8, dat->getMap()->getHeight() * 8, 32, rmask, gmask, bmask, amask));
-	for (int i = 0; i < dat->getMap()->getWidth(); i++)
-	{
-		for (int j = 0; j < dat->getMap()->getHeight(); j++)
+		dat->setLink(IMG_Load("./data/images/Link/Link_walk.png"));
+		dat->setTextureLink(SDL_CreateTextureFromSurface(dat->getRenderer(), dat->getLink()));
+		dat->setTextureArrow(SDL_CreateTextureFromSurface(dat->getRenderer(), IMG_Load("./data/images/equipement/arrows.png")));
+		dat->setTextureBomb(SDL_CreateTextureFromSurface(dat->getRenderer(), IMG_Load("./data/images/equipement/bombs.png")));
+		dat->setTextureExplosion(SDL_CreateTextureFromSurface(dat->getRenderer(), IMG_Load("./data/images/equipement/explosion.png")));
+		dat->setTextureSeed(SDL_CreateTextureFromSurface(dat->getRenderer(), IMG_Load("./data/images/equipement/seed.png")));
+		dat->setTextureHookshot(SDL_CreateTextureFromSurface(dat->getRenderer(), IMG_Load("./data/images/equipement/hookshot.png")));
+		dat->setTextureBoomerang(SDL_CreateTextureFromSurface(dat->getRenderer(), IMG_Load("./data/images/equipement/boomerang.png")));
+		dat->setTextureFireSeed(SDL_CreateTextureFromSurface(dat->getRenderer(), IMG_Load("./data/images/equipement/fireSeed.png")));
+		dat->setMapCeiling(SDL_CreateRGBSurface(0, dat->getMap()->getWidth() * 8, dat->getMap()->getHeight() * 8, 32, rmask, gmask, bmask, amask));
+		dat->setMapFloor(SDL_CreateRGBSurface(0, dat->getMap()->getWidth() * 8, dat->getMap()->getHeight() * 8, 32, rmask, gmask, bmask, amask));
+		for (int i = 0; i < dat->getMap()->getWidth(); i++)
 		{
-			SDL_Rect srcPos;
-			SDL_Rect dstPos;
-			srcPos.w = 8;
-			srcPos.h = 8;
-			dstPos.x = i * 8;
-			dstPos.y = j * 8;
-			dstPos.w = dstPos.h = 8;
-			//floor
-			srcPos.x = ((dat->getMap()->getLayerFloor()[j][i] - 1) % tilesetWidths[dat->getMap()->getTilesetValue()]) * 8;
-			srcPos.y = ((dat->getMap()->getLayerFloor()[j][i] - 1) / tilesetWidths[dat->getMap()->getTilesetValue()]) * 8;
-			SDL_BlitSurface(dat->getFond(), &srcPos, dat->getMapFloor(), &dstPos);
-			srcPos.x = ((dat->getMap()->getLayerWalls()[j][i] - 1) % tilesetWidths[dat->getMap()->getTilesetValue()])*8;
-			srcPos.y = ((dat->getMap()->getLayerWalls()[j][i] - 1) / tilesetWidths[dat->getMap()->getTilesetValue()])*8;
-			SDL_BlitSurface(dat->getFond(), &srcPos, dat->getMapFloor(), &dstPos);
+			for (int j = 0; j < dat->getMap()->getHeight(); j++)
+			{
+				SDL_Rect srcPos;
+				SDL_Rect dstPos;
+				srcPos.w = 8;
+				srcPos.h = 8;
+				dstPos.x = i * 8;
+				dstPos.y = j * 8;
+				dstPos.w = dstPos.h = 8;
+				//floor
+				srcPos.x = ((dat->getMap()->getLayerFloor()[j][i] - 1) % tilesetWidths[dat->getMap()->getTilesetValue()]) * 8;
+				srcPos.y = ((dat->getMap()->getLayerFloor()[j][i] - 1) / tilesetWidths[dat->getMap()->getTilesetValue()]) * 8;
+				SDL_BlitSurface(dat->getFond(), &srcPos, dat->getMapFloor(), &dstPos);
+				srcPos.x = ((dat->getMap()->getLayerWalls()[j][i] - 1) % tilesetWidths[dat->getMap()->getTilesetValue()]) * 8;
+				srcPos.y = ((dat->getMap()->getLayerWalls()[j][i] - 1) / tilesetWidths[dat->getMap()->getTilesetValue()]) * 8;
+				SDL_BlitSurface(dat->getFond(), &srcPos, dat->getMapFloor(), &dstPos);
+			}
 		}
-	}
-	dat->setTextureFloor(SDL_CreateTextureFromSurface(dat->getRenderer(), dat->getMapFloor()));
-	//ceiling
-	for (int i = 0; i < dat->getMap()->getWidth(); i++)
-	{
-		for (int j = 0; j < dat->getMap()->getHeight(); j++)
+		dat->setTextureFloor(SDL_CreateTextureFromSurface(dat->getRenderer(), dat->getMapFloor()));
+		//ceiling
+		for (int i = 0; i < dat->getMap()->getWidth(); i++)
 		{
-			SDL_Rect srcPos;
-			SDL_Rect dstPos;
-			srcPos.w = 8;
-			srcPos.h = 8;
-			dstPos.x = i * 8;
-			dstPos.y = j * 8;
-			dstPos.w = dstPos.h = 8;
-			//ceiling
-			srcPos.x = ((dat->getMap()->getLayerCeiling()[j][i] - 1) % tilesetWidths[dat->getMap()->getTilesetValue()]) * 8;
-			srcPos.y = ((dat->getMap()->getLayerCeiling()[j][i] - 1) / tilesetWidths[dat->getMap()->getTilesetValue()]) * 8;
-			SDL_BlitSurface(dat->getFond(), &srcPos, dat->getMapCeiling(), &dstPos);
+			for (int j = 0; j < dat->getMap()->getHeight(); j++)
+			{
+				SDL_Rect srcPos;
+				SDL_Rect dstPos;
+				srcPos.w = 8;
+				srcPos.h = 8;
+				dstPos.x = i * 8;
+				dstPos.y = j * 8;
+				dstPos.w = dstPos.h = 8;
+				//ceiling
+				srcPos.x = ((dat->getMap()->getLayerCeiling()[j][i] - 1) % tilesetWidths[dat->getMap()->getTilesetValue()]) * 8;
+				srcPos.y = ((dat->getMap()->getLayerCeiling()[j][i] - 1) / tilesetWidths[dat->getMap()->getTilesetValue()]) * 8;
+				SDL_BlitSurface(dat->getFond(), &srcPos, dat->getMapCeiling(), &dstPos);
+			}
 		}
-	}
-	dat->setTextureCeiling(SDL_CreateTextureFromSurface(dat->getRenderer(), dat->getMapCeiling()));
+		dat->setTextureCeiling(SDL_CreateTextureFromSurface(dat->getRenderer(), dat->getMapCeiling()));
 }
 
 void destroy(DataToDraw *dat)
@@ -435,7 +454,7 @@ int DrawMap(void *data, int pictureHeroX, int pictureHeroY)
 	SDL_Rect srcSeed3, dstSeed3;
 	SDL_Rect srcBomb, dstBomb;
 	SDL_Rect srcExplo, dstExplo;
-	SDL_Rect srcHook, srcChain, dstHook, dstChain1, dstChain2, dstChain3;
+	SDL_Rect srcHook, srcChain, dstHook, srcBoom, dstBoom, dstChain1, dstChain2, dstChain3;
 	SDL_Rect srcFireSeed, dstFireSeed;
 	srcSeed1.x = srcSeed1.y = srcSeed2.x = srcSeed2.y = srcSeed3.x = srcSeed3.y = 0;
 	srcSeed1.w = srcSeed1.h = srcSeed2.w = srcSeed2.h = srcSeed3.w = srcSeed3.h = 16;
@@ -446,6 +465,10 @@ int DrawMap(void *data, int pictureHeroX, int pictureHeroY)
 	dstRect.x = dstRect.y = 0;
 	dstRect.w = 640;
 	dstRect.h = 480;
+	srcBoom.x = dat->boomerang.actualImage * 18;
+	srcBoom.y = 0;
+	srcBoom.w = 18;
+	srcBoom.h = 18;
 	//deplacements simples
 	if (dat->getHero()->getActualPos() < 4)
 		srcHero.w = 24;
@@ -654,6 +677,15 @@ int DrawMap(void *data, int pictureHeroX, int pictureHeroY)
 		SDL_RenderCopy(dat->getRenderer(), dat->getTextureHookshot(), &srcChain, &dstChain1);
 		SDL_RenderCopy(dat->getRenderer(), dat->getTextureHookshot(), &srcChain, &dstChain2);
 		SDL_RenderCopy(dat->getRenderer(), dat->getTextureHookshot(), &srcChain, &dstChain3);
+	}
+
+	if (dat->boomerang.boomerangExists) // Boomerang
+	{
+		dstBoom.x = dstHero.x - (int)((dat->getHero()->getPosX() - dat->boomerang.posX) * 16) + 12;
+		dstBoom.y = dstHero.y - (int)((dat->getHero()->getPosY() - dat->boomerang.posY) * 16) + 32;
+		dstBoom.w = 18 * 2;
+		dstBoom.h = 18 * 2;
+		SDL_RenderCopy(dat->getRenderer(), dat->getTextureBoomerang(), &srcBoom, &dstBoom);
 	}
 	
 	SDL_RenderCopy(dat->getRenderer(), dat->getTextureCeiling(), &srcRect, &dstRect);

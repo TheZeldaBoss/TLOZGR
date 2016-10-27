@@ -120,47 +120,43 @@ int use_bow(void *Data)
 	if (dat->arrow.arrowExists == false)
 	{
 		dat->arrow.arrowExists = true;
-		if (dat->getHero()->getActualPos() % 4 == 0)//bas
+		if (dat->getHero()->getActualPos() % 4 == 0) //bas
 		{
-			while (dat->arrow.getPosY() < dat->getMap()->getHeight())
+			while (dat->arrow.getPosY() < dat->getMap()->getHeight() && dat->getMap()->getLayerWalls()[(int)(dat->arrow.getPosY() + .125)][(int)(dat->arrow.getPosX())] == 0)
 			{
 				dat->needDraw = true;
 				dat->arrow.setPosY((float)(dat->arrow.getPosY() + .125));
 				Sleep(5);
 			}
-			dat->arrow.arrowExists = false;
 		}
-		else if (dat->getHero()->getActualPos() % 4 == 1)//gauche
+		else if (dat->getHero()->getActualPos() % 4 == 1) //gauche
 		{
-			while (dat->arrow.getPosX() > 0)
+			while (dat->arrow.getPosX() > 0 && dat->getMap()->getLayerWalls()[(int)(dat->arrow.getPosY())][(int)(dat->arrow.getPosX() - .125)] == 0)
 			{
 				dat->needDraw = true;
 				dat->arrow.setPosX((float)(dat->arrow.getPosX() - .125));
 				Sleep(5);
 			}
-			dat->arrow.arrowExists = false;
 		}
-		else if (dat->getHero()->getActualPos() % 4 == 2)//haut
+		else if (dat->getHero()->getActualPos() % 4 == 2) //haut
 		{
-			while (dat->arrow.getPosY() > 0)
+			while (dat->arrow.getPosY() > 0 && dat->getMap()->getLayerWalls()[(int)(dat->arrow.getPosY() - .125)][(int)(dat->arrow.getPosX())] == 0)
 			{
 				dat->needDraw = true;
 				dat->arrow.setPosY((float)(dat->arrow.getPosY() - .125));
 				Sleep(5);
 			}
-			dat->arrow.arrowExists = false;
 		}
-		else//droite
+		else //droite
 		{
-			while (dat->arrow.getPosX() < dat->getMap()->getWidth())
+			while (dat->arrow.getPosX() < dat->getMap()->getWidth() && dat->getMap()->getLayerWalls()[(int)(dat->arrow.getPosY())][(int)(dat->arrow.getPosX() + .125)] == 0)
 			{
 				dat->needDraw = true;
 				dat->arrow.setPosX((float)(dat->arrow.getPosX() + .125));
 				Sleep(5);
 			}
-			dat->arrow.arrowExists = false;
 		}
-		
+		dat->arrow.arrowExists = false;
 	}
 	return (0);
 }
@@ -590,6 +586,103 @@ int use_lantern(void *data)
 int use_boomerang(void *data)
 {
 	DataToDraw *dat = (DataToDraw *)data;
+	int anim = 0;
+	int curPos = 12 + dat->getHero()->getActualPos();
+	int i;
+	int dir = dat->getHero()->getActualPos() % 4;
+	float hX = dat->getHero()->getPosX();
+	float hY = dat->getHero()->getPosY();
+	float x = 0;
+	float y = 0;
+	float mv = 1.0;
+	float difX;
+	float difY;
+	float vit = (float).033; // Changer la vitesse
+	dejala = true;
+	dat->useObject = true;
+	while (anim != 4)
+	{
+		dat->getHero()->setActualPos(curPos);
+		dat->getHero()->setActualImage(anim);
+		dat->needDraw = true;
+		anim++;
+		Sleep(80);
+	}
+	dat->getHero()->setActualPos(curPos - 12);
+	dat->getHero()->setActualImage(0);
+	dat->useObject = false;
+	anim = 0;
+	dat->boomerang.posX = dat->getHero()->getPosX();
+	dat->boomerang.posY = dat->getHero()->getPosY();
+	dat->boomerang.boomerangExists = true;
+	while (dat->boomerang.back != true)
+	{
+		i = 0;
+		while (i < 8 && dat->boomerang.back != true)
+		{
+			dat->boomerang.posX = hX + x;
+			dat->boomerang.posY = hY + y;
+			dat->needDraw = true;
+			dat->boomerang.actualImage = i;
+			anim++;
+			if (anim == 2)
+			{
+				i++;
+				anim = 0;
+			}
+			mv -= vit;
+			if (dir == 0) // bas
+				y += mv;
+			else if (dir == 1) // gauche
+				x -= mv;
+			else if (dir == 2) // haut
+				y -= mv;
+			else if (dir == 3) // droite
+				x += mv;
+			if (mv <= 0 || dat->getMap()->getLayerWalls()[(int)dat->boomerang.posY][(int)dat->boomerang.posX] != 0)
+				dat->boomerang.back = true;
+			Sleep(20);
+		}
+	}
+	x = 0;
+	y = 0;
+	mv *= -1;
+	while (dat->boomerang.back != false)
+	{
+		if (i == 8)
+			i = 0;
+		while (i < 8 && dat->boomerang.back != false)
+		{
+			dat->needDraw = true;
+			dat->boomerang.actualImage = i;
+			anim++;
+			if (anim == 2)
+			{
+				i++;
+				anim = 0;
+			}
+			mv -= vit;
+			difX = dat->getHero()->getPosX() - dat->boomerang.posX;
+			difY = dat->getHero()->getPosY() - dat->boomerang.posY;
+			if (dir == 0 || dir == 3)
+			{
+				dat->boomerang.posX += (difX / (difX + difY)) * mv;
+				dat->boomerang.posY += (difY / (difX + difY)) * mv;
+			}
+			else
+			{
+				dat->boomerang.posX -= (difX / (difX + difY)) * mv;
+				dat->boomerang.posY -= (difY / (difX + difY)) * mv;
+			}
+			if ((difX >= -1.5 && difX <= 1.5) && (difY >= -1.5 && difY <= 1.5))
+				dat->boomerang.back = false;
+			Sleep(20);
+		}
+	}
+	dat->boomerang.actualImage = -1;
+	dat->needDraw = true;
+	dejala = false;
+	dat->boomerang.boomerangExists = false;
 	return (0);
 }
 
